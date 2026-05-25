@@ -4,5 +4,7 @@ playwright-report/
 test-results/
 .vite/
 coverage/
+blob-report/
+.playwright/
 .DS_Store
 *.local
