@@ -1213,6 +1213,41 @@ html[data-reduce-motion="true"] *::after {
   display: none;
 }
 
+.dialogue-controls .recommendations button:disabled {
+  cursor: not-allowed;
+  color: #66788d;
+  border-color: #243348;
+  opacity: 0.62;
+}
+
+.finale-gate {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px dashed #394b60;
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.finale-gate strong {
+  color: var(--warning);
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+.finale-gate.ready {
+  border-color: rgba(95, 224, 202, 0.45);
+}
+
+.finale-gate.ready strong {
+  color: #5fe0ca;
+}
+
+.finale-gate small {
+  color: #bac9d9;
+}
+
 .screen-reader-fallback {
   opacity: 0;
   width: 1px;
@@ -1245,6 +1280,11 @@ html[data-reduce-motion="true"] *::after {
   background: #182338;
   z-index: 3;
   box-shadow: 0 0 0 2px #364b61, 7px 7px 0 rgba(0,0,0,0.35);
+}
+
+.dialogue-controls .preview-card .confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .dialogue-controls {

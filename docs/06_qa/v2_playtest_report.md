@@ -18,6 +18,7 @@ Date: May 25, 2026
 | Mystery prose is more dramatic but still legible | Pass | Action narration now leads with observed behavior and identifies the testable consequence; benchmark documented separately. |
 | Responsive layouts remain playable | Pass | Desktop and Pixel 7 automated full-session flows pass; manual mobile review corrected an excessive notebook height. |
 | Future multiplayer/authorship can extend structure | Pass | `RoleController`, `RoomSeat`, `MatchTicket` and `EpisodeDraft` contracts plus roadmap are reserved without changing truth ownership. |
+| Immediate final-action shortcut is blocked | Pass | Protect/Reveal remain locked until verified clues are obtained from two different people; typed final intents cannot bypass the same engine rule. |
 
 ## Validation Results
 
@@ -25,10 +26,10 @@ Date: May 25, 2026
 | --- | --- |
 | `npm run lint` | Passed |
 | `npm run typecheck` | Passed |
-| `npm run test` | Passed, 5 tests |
+| `npm run test` | Passed, 6 tests including early final-action rejection |
 | `npx wrangler deploy --dry-run --config worker/wrangler.jsonc --outdir worker-dist` | Passed, Workers AI binding validated |
 | `npm run build` | Passed |
-| `npm run test:e2e` | Passed, desktop and mobile complete sessions |
+| `npm run test:e2e` | Passed, desktop and mobile complete sessions plus immediate-protection regression flow |
 | Cloudflare live actor endpoint request | Passed, non-empty Chinese performance returned from `@cf/zai-org/glm-4.7-flash` |
 
 ## Manual Review

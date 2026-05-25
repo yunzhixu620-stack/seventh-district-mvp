@@ -74,4 +74,11 @@ export const ui = {
   riskEase: { zhCN: '暴露缓和', en: 'Exposure eased' },
   spentComposure: { zhCN: '冷静消耗', en: 'Composure spent' },
   spentFavor: { zhCN: '人情消耗', en: 'Favor spent' },
+  finaleLocked: { zhCN: '终局裁定未解锁', en: 'FINAL RULING LOCKED' },
+  finaleReady: { zhCN: '终局裁定已解锁', en: 'FINAL RULING READY' },
+  finaleRequirement: { zhCN: '至少取得两条来自不同人物的可核验线索。', en: 'Obtain two verifiable clues from different people.' },
+  finaleSatisfied: { zhCN: '你已有足够证据，可以提交最终判断。', en: 'You have enough evidence to submit a final judgment.' },
+  finaleTarget: { zhCN: '保护或揭示将作用于当前面对的人：', en: 'Protect or Reveal will judge the person you face: ' },
+  evidenceProgress: { zhCN: '证据进度', en: 'Evidence progress' },
+  finalBlockedPreview: { zhCN: '现在下结论只是在猜。继续调查，终局行动不会在证据不足时生效。', en: 'A final call now would be a guess. Keep investigating; final actions cannot resolve the case without evidence.' },
 } satisfies Record<string, LocalizedText>

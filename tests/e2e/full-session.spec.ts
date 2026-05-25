@@ -49,3 +49,22 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await page.getByRole('button', { name: 'Replay with a new role' }).click()
   await expect(page.getByText('Whose Voice Will You Borrow?')).toBeVisible()
 })
+
+test('a role cannot shortcut the incident with immediate protection', async ({ page }) => {
+  await page.goto('./')
+  await page.getByRole('button', { name: 'EN' }).click()
+  await page.getByRole('link', { name: 'Begin in the Rain' }).click()
+  await page.locator('.role-option').filter({ hasText: 'Keeper' }).getByRole('button').click()
+  await page.getByRole('button', { name: 'Enter the scene' }).click()
+
+  await expect(page.getByText('FINAL RULING LOCKED')).toBeVisible()
+  await expect(page.getByText(/Evidence progress 0\/2/)).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Protect', exact: true })).toBeDisabled()
+  await expect(page.locator('select')).not.toHaveValue('keeper')
+
+  await page.getByPlaceholder('Example: He Lan, you know when that seal was set, do you not?').fill('protect Zhao Jing now')
+  await page.getByRole('button', { name: 'Ready the line' }).click()
+  await expect(page.getByRole('dialog')).toContainText('A final call now would be a guess.')
+  await expect(page.getByRole('dialog').getByRole('button', { name: 'Say it' })).toBeDisabled()
+  await expect(page.getByText('Session Replay Report')).not.toBeVisible()
+})

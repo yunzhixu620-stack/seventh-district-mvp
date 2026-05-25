@@ -29,6 +29,22 @@ describe('action interpretation and ruling', () => {
     expect(isCanonSafe(result)).toBe(true)
   })
 
+  it('blocks immediate final protection or reveal until evidence comes from two people', () => {
+    for (const roleId of ['investigator', 'keeper', 'seeker'] as const) {
+      for (const finalAction of ['protect', 'reveal'] as const) {
+        const active = activateSession(createSession(roleId, 'D7-NIGHT'))
+        const ruling = ruleAction(
+          active,
+          parseAction(`${finalAction} now`, 'freeText', finalAction, active.truth.idealTarget),
+        )
+        expect(ruling.actionAccepted).toBe(false)
+        expect(ruling.nextState.status).toBe('active')
+        expect(ruling.nextState.history).toHaveLength(0)
+        expect(ruling.nextState.favor).toBe(active.favor)
+      }
+    }
+  })
+
   it('finishes with a matching protected outcome once evidence is gathered', () => {
     let session = activateSession(createSession('investigator', 'D7-NIGHT'))
     const truth = session.truth

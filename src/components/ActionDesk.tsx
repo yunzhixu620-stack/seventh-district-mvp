@@ -7,6 +7,7 @@ import { localize } from '../types/i18n'
 import type { RoleId } from '../types/role'
 import { useGameStore } from '../store/gameStore'
 import { playCue } from '../utils/audio'
+import { evaluateFinaleGate, REQUIRED_FINALE_CLUES } from '../engine/finaleGate'
 
 export function ActionDesk({ onFinished }: { onFinished: () => void }) {
   const [input, setInput] = useState('')
@@ -17,6 +18,10 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
   if (!session) return null
   const t = (key: keyof typeof ui) => localize(ui[key], language)
   const targets = Object.keys(roleById).filter((id) => id !== session.roleId) as RoleId[]
+  const finaleGate = evaluateFinaleGate(session)
+  const finalPreviewLocked = Boolean(
+    pendingAction && actions[pendingAction.type].terminal && !finaleGate.ready,
+  )
 
   const submitText = (event: FormEvent) => {
     event.preventDefault()
@@ -59,11 +64,21 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
       </div>
       <div className="recommendations">
         {actionOrder.map((type) => (
-          <button key={type} className={actions[type].terminal ? 'terminal-action' : ''} onClick={() => previewRecommended(type)}>
+          <button
+            key={type}
+            className={`${actions[type].terminal ? 'terminal-action' : ''} ${actions[type].terminal && !finaleGate.ready ? 'locked-action' : ''}`.trim()}
+            onClick={() => previewRecommended(type)}
+            disabled={actions[type].terminal && !finaleGate.ready}
+          >
             <span>{localize(actions[type].label, language)}</span>
             <small>{localize(actions[type].description, language)}</small>
           </button>
         ))}
+      </div>
+      <div className={`finale-gate ${finaleGate.ready ? 'ready' : ''}`} aria-live="polite">
+        <strong>{t(finaleGate.ready ? 'finaleReady' : 'finaleLocked')}</strong>
+        <span>{t('evidenceProgress')} {Math.min(finaleGate.sourceCount, REQUIRED_FINALE_CLUES)}/{REQUIRED_FINALE_CLUES} · {t(finaleGate.ready ? 'finaleSatisfied' : 'finaleRequirement')}</span>
+        <small>{t('finaleTarget')}{localize(npcProfiles[selectedTargetId].callSign, language)}</small>
       </div>
       <form className="freeform" onSubmit={submitText}>
         <label htmlFor="intent">{t('freeform')}</label>
@@ -76,9 +91,9 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
         <div className="preview-card" role="dialog" aria-label={t('preview')}>
           <p className="eyebrow">{t('preview')} / {pendingAction.confidence}</p>
           <strong>{localize(actions[pendingAction.type].label, language)} → {localize(npcProfiles[selectedTargetId].callSign, language)}</strong>
-          <p>{localize(pendingAction.warning, language)}</p>
+          <p>{finalPreviewLocked ? t('finalBlockedPreview') : localize(pendingAction.warning, language)}</p>
           <div>
-            <button className="confirm" onClick={commit}>{t('confirm')}</button>
+            <button className="confirm" onClick={commit} disabled={finalPreviewLocked}>{t('confirm')}</button>
             <button onClick={cancelPreview}>{t('cancel')}</button>
           </div>
         </div>
