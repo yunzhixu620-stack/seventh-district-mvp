@@ -15,14 +15,14 @@ export function PreferenceControls() {
   }, [language, reducedMotion])
 
   useEffect(() => {
-    if (audioEnabled) void startAmbience(volume)
+    if (audioEnabled) void startAmbience(1)
     else stopAmbience()
     return () => stopAmbience()
   }, [audioEnabled])
 
   useEffect(() => {
-    setAmbienceVolume(volume)
-  }, [volume])
+    if (audioEnabled) setAmbienceVolume(volume)
+  }, [audioEnabled, volume])
 
   return (
     <div className="preference-controls" aria-label={t('language')}>
