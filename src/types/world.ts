@@ -33,6 +33,7 @@ export type SessionState = {
 }
 
 export type RulingResult = {
+  actionAccepted: boolean
   nextState: SessionState
   addedClues: Clue[]
   addedMessages: GameMessage[]

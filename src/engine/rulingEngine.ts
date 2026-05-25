@@ -6,6 +6,7 @@ import type { GameMessage } from '../types/message'
 import type { RulingResult, SessionState } from '../types/world'
 import { filterLegalClues } from './consistencyGuard'
 import { directNextBeat } from './directorEngine'
+import { evaluateFinaleGate } from './finaleGate'
 import { simulateRoleAgents } from './roleAgentEngine'
 
 const clampRisk = (risk: number) => Math.max(0, Math.min(100, risk))
@@ -32,14 +33,38 @@ const denialMessage = (state: SessionState): GameMessage => ({
   },
 })
 
+const lockedFinaleMessage = (state: SessionState): GameMessage => ({
+  id: `finale-locked-${state.round}-${Date.now()}`,
+  sender: 'district',
+  channel: 'system',
+  round: state.round,
+  text: {
+    zhCN: '终局裁定未解锁：先从至少两名不同对象处取得可核验线索，才能决定保护谁或公开揭示谁。',
+    en: 'Final ruling locked: secure verifiable clues from at least two different people before choosing whom to protect or expose.',
+  },
+})
+
 export const ruleAction = (state: SessionState, action: ParsedAction): RulingResult => {
   const definition = actions[action.type]
   const requiredComposure = definition.cost.composure ?? 0
   const requiredFavor = definition.cost.favor ?? 0
 
+  if (definition.terminal && !evaluateFinaleGate(state).ready) {
+    const locked = lockedFinaleMessage(state)
+    return {
+      actionAccepted: false,
+      nextState: { ...state, messages: [...state.messages, locked] },
+      addedClues: [],
+      addedMessages: [locked],
+      riskDelta: 0,
+      resourceSpent: '',
+    }
+  }
+
   if (state.composure < requiredComposure || state.favor < requiredFavor) {
     const denied = denialMessage(state)
     return {
+      actionAccepted: false,
       nextState: { ...state, messages: [...state.messages, denied] },
       addedClues: [],
       addedMessages: [denied],
@@ -99,6 +124,7 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
   }
 
   return {
+    actionAccepted: true,
     nextState,
     addedClues,
     addedMessages,

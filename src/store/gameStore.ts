@@ -63,6 +63,10 @@ export const useGameStore = create<GameStore>()(
       chooseRole: (selectedRoleId) =>
         set((state) => ({
           selectedRoleId,
+          selectedTargetId:
+            state.selectedTargetId === selectedRoleId
+              ? (Object.keys(roleById).find((roleId) => roleId !== selectedRoleId) as RoleId)
+              : state.selectedTargetId,
           session: createSession(selectedRoleId, state.seed),
           pendingAction: undefined,
           actorLoading: false,
@@ -85,9 +89,9 @@ export const useGameStore = create<GameStore>()(
         if (!session || !pendingAction) return undefined
         const ruling = ruleAction(session, pendingAction)
         const nextState = ruling.nextState
-        set({ session: nextState, pendingAction: undefined, actorLoading: nextState.status !== 'finished' })
+        set({ session: nextState, pendingAction: undefined, actorLoading: ruling.actionAccepted && nextState.status !== 'finished' })
         const targetId = pendingAction.targetId
-        if (nextState.status !== 'finished' && targetId) {
+        if (ruling.actionAccepted && nextState.status !== 'finished' && targetId) {
           const target = roleById[targetId]
           const performance = await requestActorPerformance({
             locale: language,
