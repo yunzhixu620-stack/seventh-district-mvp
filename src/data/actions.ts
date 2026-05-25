@@ -1,0 +1,77 @@
+import type { ActionDefinition, ActionType } from '../types/action'
+
+export const actions: Record<ActionType, ActionDefinition> = {
+  ask: {
+    id: 'ask',
+    label: { zhCN: '询问', en: 'Ask' },
+    description: { zhCN: '在公开记录中提出一个中性问题。', en: 'Put a neutral question on the public record.' },
+    preview: { zhCN: '公开追问，通常不会增加暴露度。', en: 'Public question, normally without added exposure.' },
+    cost: {},
+    baseRisk: 0,
+    terminal: false,
+  },
+  probe: {
+    id: 'probe',
+    label: { zhCN: '试探', en: 'Probe' },
+    description: { zhCN: '私下施压，交换情绪稳定换取细节。', en: 'Apply pressure privately, trading composure for detail.' },
+    preview: { zhCN: '消耗 1 冷静，可能获得关键矛盾。', en: 'Spend 1 composure; may uncover a contradiction.' },
+    cost: { composure: 1 },
+    baseRisk: 14,
+    terminal: false,
+  },
+  disguise: {
+    id: 'disguise',
+    label: { zhCN: '伪装身份', en: 'Disguise' },
+    description: { zhCN: '以另一种立场接近目标。', en: 'Approach a target under a performed identity.' },
+    preview: { zhCN: '消耗 1 人情；成功可压低暴露度。', en: 'Spend 1 favor; success can reduce exposure.' },
+    cost: { favor: 1 },
+    baseRisk: -12,
+    terminal: false,
+  },
+  trade: {
+    id: 'trade',
+    label: { zhCN: '交换信息', en: 'Trade' },
+    description: { zhCN: '用承诺或资源换取一条线索。', en: 'Offer leverage or resources for one lead.' },
+    preview: { zhCN: '消耗 1 人情，交易会留下痕迹。', en: 'Spend 1 favor; the exchange leaves a trace.' },
+    cost: { favor: 1 },
+    baseRisk: 10,
+    terminal: false,
+  },
+  follow: {
+    id: 'follow',
+    label: { zhCN: '跟踪', en: 'Follow' },
+    description: { zhCN: '观察目标的去向与交接。', en: 'Observe a target route and hand-off.' },
+    preview: { zhCN: '消耗 1 冷静，被发现会提高暴露。', en: 'Spend 1 composure; detection raises exposure.' },
+    cost: { composure: 1 },
+    baseRisk: 18,
+    terminal: false,
+  },
+  reveal: {
+    id: 'reveal',
+    label: { zhCN: '公开揭示', en: 'Reveal' },
+    description: { zhCN: '以现有证据提交最终结论。', en: 'Commit a final conclusion using current evidence.' },
+    preview: { zhCN: '结束本局；证据不足时结果会受损。', en: 'Ends the run; weak evidence harms the outcome.' },
+    cost: {},
+    baseRisk: 0,
+    terminal: true,
+  },
+  protect: {
+    id: 'protect',
+    label: { zhCN: '保护目标', en: 'Protect' },
+    description: { zhCN: '将信封或角色置于安全程序下。', en: 'Place an envelope or person under safe procedure.' },
+    preview: { zhCN: '消耗 1 人情并结束本局。', en: 'Spend 1 favor and end the run.' },
+    cost: { favor: 1 },
+    baseRisk: 0,
+    terminal: true,
+  },
+}
+
+export const actionOrder: ActionType[] = [
+  'ask',
+  'probe',
+  'disguise',
+  'trade',
+  'follow',
+  'reveal',
+  'protect',
+]
