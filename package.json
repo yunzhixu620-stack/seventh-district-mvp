@@ -9,6 +9,8 @@
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "deploy:actor": "wrangler deploy --config worker/wrangler.jsonc",
+    "dev:actor": "wrangler dev --config worker/wrangler.jsonc",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -39,5 +41,6 @@
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
     "vitest": "^4.1.7"
+    ,"wrangler": "^4.90.1"
   }
 }

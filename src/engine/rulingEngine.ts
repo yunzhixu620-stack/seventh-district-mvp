@@ -68,6 +68,13 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
     knownClues: [...state.knownClues, ...addedClues],
     history: [...state.history, action],
     messages: [...state.messages, narration],
+    lastEffect: {
+      actionType: action.type,
+      riskDelta,
+      spentComposure: requiredComposure,
+      spentFavor: requiredFavor,
+      addedClueIds: addedClues.map((clue) => clue.id),
+    },
   }
   const directorMessages = directNextBeat(nextState)
   const agentMessages = simulateRoleAgents(nextState)

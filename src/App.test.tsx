@@ -23,7 +23,7 @@ describe('playable navigation and localization', () => {
     render(<MemoryRouter><App /></MemoryRouter>)
     await user.click(screen.getByRole('button', { name: 'EN' }))
     expect(screen.getByText('LINXIA ENVELOPE INCIDENT')).toBeInTheDocument()
-    await user.click(screen.getByRole('link', { name: 'Enter District Terminal' }))
+    await user.click(screen.getByRole('link', { name: 'Begin in the Rain' }))
     await user.click(screen.getAllByRole('button', { name: 'Select and receive briefing' })[0])
     expect(screen.getByText(/Private Role Briefing/)).toBeInTheDocument()
     expect(screen.getByText('Investigator')).toBeInTheDocument()

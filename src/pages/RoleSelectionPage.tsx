@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { selectableRoles } from '../data/roles'
+import { roles, selectableRoles } from '../data/roles'
 import { ui } from '../data/uiCopy'
 import { localize } from '../types/i18n'
 import { useGameStore } from '../store/gameStore'
+import { PixelPortrait } from '../components/PixelPortrait'
 
 export function RoleSelectionPage() {
   const navigate = useNavigate()
@@ -15,20 +16,34 @@ export function RoleSelectionPage() {
   }
 
   return (
-    <main className="selection-page">
+    <main className="selection-page v2-selection">
       <div className="page-intro">
         <p className="eyebrow">{t('incident')}</p>
-        <h1>{t('rolesHeading')}</h1>
-        <p>{t('rolesIntro')}</p>
+        <h1>{t('castTitle')}</h1>
+        <p>{t('castIntro')}</p>
         <label className="seed-control">
           <span>{t('seed')}</span>
           <input value={seed} onChange={(event) => setSeed(event.target.value)} />
           <button onClick={randomizeSeed}>{t('randomize')}</button>
         </label>
       </div>
+      <section className="cast-roster">
+        {roles.map((role) => (
+          <article key={role.id} className={role.selectable ? 'inhabitable' : ''}>
+            <PixelPortrait roleId={role.id} language={language} />
+            <p>{localize(role.publicIdentity, language)}</p>
+            <span>{role.selectable ? t('playerReady') : t('aiControlled')}</span>
+          </article>
+        ))}
+      </section>
+      <div className="selection-heading">
+        <h2>{t('rolesHeading')}</h2>
+        <p>{t('rolesIntro')}</p>
+      </div>
       <div className="role-grid">
         {selectableRoles.map((role) => (
           <article className="role-option" key={role.id}>
+            <PixelPortrait roleId={role.id} language={language} />
             <p className="eyebrow">{localize(role.roleDifficulty, language)} / {t('difficulty')}</p>
             <h2>{localize(role.name, language)}</h2>
             <p className="role-public">{localize(role.publicIdentity, language)}</p>

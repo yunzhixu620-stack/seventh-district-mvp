@@ -12,7 +12,7 @@ export function BoardPage() {
   if (session.status === 'finished') return <Navigate to="/report" replace />
 
   return (
-    <main className="situation-board">
+    <main className="situation-board v2-board">
       <StatusCard />
       <div className="board-center">
         <ScenePanel />

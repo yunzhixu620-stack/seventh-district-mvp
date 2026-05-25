@@ -4,6 +4,10 @@ import { parseAction } from '../engine/actionParser'
 import { ruleAction } from '../engine/rulingEngine'
 import { activateSession, createSession } from '../engine/sessionEngine'
 import { createRandomSeed } from '../engine/seedEngine'
+import { locations } from '../data/locations'
+import { npcProfiles } from '../data/npcs'
+import { roleById } from '../data/roles'
+import { requestActorPerformance } from '../providers/liveActorProvider'
 import type { ActionType, ParsedAction } from '../types/action'
 import type { Language } from '../types/i18n'
 import type { RoleId } from '../types/role'
@@ -22,6 +26,7 @@ type GameStore = Preferences & {
   selectedTargetId: RoleId
   session?: SessionState
   pendingAction?: ParsedAction
+  actorLoading: boolean
   setLanguage: (language: Language) => void
   setAudioEnabled: (enabled: boolean) => void
   setVolume: (volume: number) => void
@@ -35,7 +40,7 @@ type GameStore = Preferences & {
   previewRecommended: (action: ActionType) => void
   previewText: (input: string) => void
   cancelPreview: () => void
-  commitAction: () => SessionState | undefined
+  commitAction: () => Promise<SessionState | undefined>
   resetRun: () => void
 }
 
@@ -48,6 +53,7 @@ export const useGameStore = create<GameStore>()(
       reducedMotion: false,
       seed: 'D7-NIGHT',
       selectedTargetId: 'keeper',
+      actorLoading: false,
       setLanguage: (language) => set({ language }),
       setAudioEnabled: (audioEnabled) => set({ audioEnabled }),
       setVolume: (volume) => set({ volume }),
@@ -59,6 +65,7 @@ export const useGameStore = create<GameStore>()(
           selectedRoleId,
           session: createSession(selectedRoleId, state.seed),
           pendingAction: undefined,
+          actorLoading: false,
         })),
       beginIncident: () => set((state) => (state.session ? { session: activateSession(state.session) } : state)),
       setTarget: (selectedTargetId) => set({ selectedTargetId }),
@@ -73,11 +80,58 @@ export const useGameStore = create<GameStore>()(
           pendingAction: parseAction(input, 'freeText', undefined, state.selectedTargetId),
         })),
       cancelPreview: () => set({ pendingAction: undefined }),
-      commitAction: () => {
-        const { session, pendingAction } = get()
+      commitAction: async () => {
+        const { session, pendingAction, language } = get()
         if (!session || !pendingAction) return undefined
-        const nextState = ruleAction(session, pendingAction).nextState
-        set({ session: nextState, pendingAction: undefined })
+        const ruling = ruleAction(session, pendingAction)
+        const nextState = ruling.nextState
+        set({ session: nextState, pendingAction: undefined, actorLoading: nextState.status !== 'finished' })
+        const targetId = pendingAction.targetId
+        if (nextState.status !== 'finished' && targetId) {
+          const target = roleById[targetId]
+          const performance = await requestActorPerformance({
+            locale: language,
+            actionType: pendingAction.type,
+            utterance: pendingAction.rawInput,
+            round: nextState.round,
+            exposureBand: nextState.risk >= 60 ? 'high' : nextState.risk >= 32 ? 'rising' : 'low',
+            location: locations[nextState.locationId].name,
+            player: {
+              roleId: nextState.roleId,
+              publicIdentity: nextState.role.publicIdentity,
+            },
+            target: {
+              roleId: target.id,
+              name: npcProfiles[targetId].callSign,
+              publicIdentity: target.publicIdentity,
+              posture: npcProfiles[targetId].posture,
+            },
+            allowedEvidence: nextState.knownClues.map((clue) => clue.detail),
+          })
+          set((current) => {
+            if (!current.session || current.session.round !== nextState.round) return { actorLoading: false }
+            return {
+              actorLoading: false,
+              session: {
+                ...current.session,
+                latestPerformance: performance,
+                messages: [
+                  ...current.session.messages,
+                  {
+                    id: `actor-${nextState.round}-${targetId}`,
+                    sender: targetId,
+                    channel: 'private',
+                    round: nextState.round,
+                    text: { zhCN: performance.line, en: performance.line },
+                    aiMode: performance.mode,
+                  },
+                ],
+              },
+            }
+          })
+        } else if (nextState.status !== 'finished') {
+          set({ actorLoading: false })
+        }
         return nextState
       },
       resetRun: () =>
@@ -85,6 +139,7 @@ export const useGameStore = create<GameStore>()(
           selectedRoleId: undefined,
           session: undefined,
           pendingAction: undefined,
+          actorLoading: false,
           seed: createRandomSeed(),
           selectedTargetId: state.selectedTargetId,
         })),

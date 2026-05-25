@@ -22,7 +22,7 @@ export function IntelBoard() {
         {(['public', 'private', 'clues'] as Tab[]).map((item) => (
           <button role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} key={item} onClick={() => setTab(item)}>
             {t(item)}
-            {item === 'clues' && <small>{session.knownClues.length}</small>}
+            {item === 'clues' && <small className={session.knownClues.length ? 'has-clue' : ''}>{session.knownClues.length ? `${t('newEvidence')} ${session.knownClues.length}` : '0'}</small>}
           </button>
         ))}
       </div>
@@ -30,7 +30,8 @@ export function IntelBoard() {
         <div className="clue-list">
           {session.knownClues.length === 0 && <p className="empty">{t('emptyClue')}</p>}
           {session.knownClues.map((clue) => (
-            <article key={clue.id}>
+            <article key={clue.id} className="fresh-clue">
+              <span className="evidence-tag">{t('newEvidence')}</span>
               <h3>{localize(clue.title, language)}</h3>
               <p>{localize(clue.detail, language)}</p>
             </article>

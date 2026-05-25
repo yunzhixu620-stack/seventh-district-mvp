@@ -23,10 +23,10 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
     if (input.trim()) previewText(input)
   }
 
-  const commit = () => {
+  const commit = async () => {
     const previousClues = session.knownClues.length
     const previousRisk = session.risk
-    const nextState = commitAction()
+    const nextState = await commitAction()
     if (!nextState || !audioEnabled) {
       if (nextState?.status === 'finished') onFinished()
       return
@@ -40,13 +40,13 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
   }
 
   return (
-    <section className="panel action-desk" aria-label={t('actions')}>
+    <section className="dialogue-controls" aria-label={t('actions')}>
       <div className="section-head">
         <div>
           <p className="eyebrow">{t('round')} {session.round}</p>
           <h2>{t('actions')}</h2>
         </div>
-        <label className="target-select">
+        <label className="target-select screen-reader-fallback">
           <span>{t('chooseTarget')}</span>
           <select value={selectedTargetId} onChange={(event) => setTarget(event.target.value as RoleId)}>
             {targets.map((id) => (
@@ -68,7 +68,7 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
       <form className="freeform" onSubmit={submitText}>
         <label htmlFor="intent">{t('freeform')}</label>
         <div>
-          <input id="intent" value={input} placeholder={t('placeholder')} onChange={(event) => setInput(event.target.value)} />
+          <input id="intent" value={input} placeholder={t('placeholder')} onChange={(event) => setInput(event.target.value)} autoComplete="off" />
           <button type="submit">{t('interpret')}</button>
         </div>
       </form>
