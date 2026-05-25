@@ -7,7 +7,7 @@ import { useGameStore } from '../store/gameStore'
 export function ReportPage() {
   const navigate = useNavigate()
   const { session, language, resetRun } = useGameStore()
-  if (!session || session.status !== 'finished') return <Navigate to="/" replace />
+  if (!session || session.status !== 'finished') return <Navigate to="/roles" replace />
   const report = buildReplayReport(session)
   const t = (key: keyof typeof ui) => localize(ui[key], language)
 

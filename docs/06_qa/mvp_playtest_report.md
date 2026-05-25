@@ -13,7 +13,7 @@ Date: May 25, 2026
 | Selectable roles expose distinct motivation and resources | Pass | Investigator, Keeper, and Seeker role cards and briefing flow. |
 | Free input is parsed before state mutation | Pass | Board preview dialog appears before commit; covered by browser test. |
 | Rules and canon remain deterministic | Pass | Unit tests verify stable seed truth and consistency-safe clue award. |
-| Full run produces messages, clues, and replay | Pass | Desktop and mobile Chromium end-to-end sessions complete to report. |
+| Full run produces messages, clues, and replay | Pass | Desktop and mobile Chromium sessions select the true threat, reach `Safe Resolution`, and restart at role selection. |
 | Interface reads as situation board rather than chat | Pass | Fixed role/resource status, scene selector, action desk, and tabbed intelligence displayed concurrently. |
 | Localization remains usable during a run | Pass | UI navigation test changes to English before play; state is unchanged by language preference. |
 | Sound has legal and accessible behavior | Pass | Runtime-only synthesized ambience/cues; opt-in toggle, volume, and mute present. |
