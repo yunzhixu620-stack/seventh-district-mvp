@@ -9,4 +9,5 @@ export type GameMessage = {
   sender: RoleId | 'district'
   round: number
   text: LocalizedText
+  aiMode?: 'live' | 'fallback'
 }

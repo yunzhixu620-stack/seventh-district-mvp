@@ -1,4 +1,5 @@
 import type { LocalizedText } from './i18n'
+import type { RoleId } from './role'
 
 export type ActionType =
   | 'ask'
@@ -21,7 +22,7 @@ export type ActionDefinition = {
 
 export type ParsedAction = {
   type: ActionType
-  targetId?: string
+  targetId?: RoleId
   rawInput: string
   source: 'recommended' | 'freeText'
   confidence: 'high' | 'medium' | 'low'

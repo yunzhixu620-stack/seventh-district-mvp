@@ -32,13 +32,13 @@ export const openingWhispers: Record<RoleId, LocalizedText> = {
 }
 
 export const actionResponses: Record<ActionType, LocalizedText> = {
-  ask: { zhCN: '你的问题进入公共频道，回应刻意避开了地址。', en: 'Your question reaches the public feed; the response carefully avoids an address.' },
-  probe: { zhCN: '短暂沉默之后，对方发来一项可核验的细节。', en: 'After a pause, the contact sends one detail that can be verified.' },
-  disguise: { zhCN: '你的新说辞被暂时接受，视线从你身上移开。', en: 'Your new cover is provisionally accepted; attention shifts away.' },
-  trade: { zhCN: '交易完成，但公共频道出现了关于私下接触的影射。', en: 'The exchange succeeds, but the public feed hints at private contact.' },
-  follow: { zhCN: '你记录下一段移动轨迹，对方也注意到了脚步。', en: 'You log a movement trail; the target notices footsteps too.' },
-  reveal: { zhCN: '你把判断写入公开记录，终端停止接受新的证词。', en: 'You submit your judgment to the public record; the terminal closes testimony.' },
-  protect: { zhCN: '你启动安全程序，信封状态转为封存待审。', en: 'You initiate safe procedure; the envelope is sealed for review.' },
+  ask: { zhCN: '你故意让每个人都听见这个问题。雨棚下短暂安静下来，但回答绕开了最要命的地址。', en: 'You make sure everyone hears the question. The awning falls quiet, but the reply circles around the one address that matters.' },
+  probe: { zhCN: '你把声音压低，逼对方在沉默和露怯之间选一个。几秒后，一项能核验的细节落进你的手里。', en: 'You lower your voice and make them choose between silence and a tell. Seconds later, one verifiable detail falls into your hand.' },
+  disguise: { zhCN: '你把谎话说得像旧事一样自然。对方暂时接受了这个身份，盯着你的视线松开了一寸。', en: 'You tell the lie as if it were an old memory. For now, they accept the identity and their gaze loosens by an inch.' },
+  trade: { zhCN: '你递出一部分筹码，换来另一部分真相。可雨夜传言跑得更快，私下会面的痕迹已经被人看见。', en: 'You put one piece on the table and receive another. But rumor runs faster in the rain; someone has noticed the private exchange.' },
+  follow: { zhCN: '你踩着积水后的脚印追了半条街，记下了路线。转角处的人没有回头，却突然停了一步。', en: 'You follow wet footprints for half a block and memorize the route. At the corner, the figure does not turn, but misses a single step.' },
+  reveal: { zhCN: '你把判断说给全场听。话音落下，所有退路都变成了证词。', en: 'You speak your judgment before everyone. Once the words land, every escape route becomes testimony.' },
+  protect: { zhCN: '你将信封推入保护流程，封条在灯下重新压紧。若你判断错了，现在也没有轻易回头的机会。', en: 'You place the envelope into protection and watch the seal press tight beneath the light. If you are wrong, there is no easy retreat now.' },
 }
 
 export const aiPressureByRole: Record<RoleId, LocalizedText[]> = {

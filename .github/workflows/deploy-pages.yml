@@ -30,6 +30,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test
+      - run: npx wrangler deploy --dry-run --config worker/wrangler.jsonc --outdir worker-dist
       - run: npm run build
       - run: npm run test:e2e
       - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
