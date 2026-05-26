@@ -5,20 +5,26 @@ import type { Clue } from '../types/episode'
 import type { GameMessage } from '../types/message'
 import type { RulingResult, SessionState } from '../types/world'
 import { filterLegalClues } from './consistencyGuard'
-import { directNextBeat } from './directorEngine'
 import { evaluateFinaleGate } from './finaleGate'
 import { simulateRoleAgents } from './roleAgentEngine'
+import { advanceStreetState } from './streetStateEngine'
 
 const clampRisk = (risk: number) => Math.max(0, Math.min(100, risk))
 
 const findClue = (state: SessionState, action: ParsedAction): Clue[] => {
-  if (action.type === 'disguise' || action.type === 'reveal' || action.type === 'protect') return []
+  if (
+    action.type === 'disguise' ||
+    action.type === 'reveal' ||
+    action.type === 'protect'
+  )
+    return []
   const unknown = state.truth.clues.filter(
     (clue) => !state.knownClues.some((known) => known.id === clue.id),
   )
   const targeted = unknown.find((clue) => clue.sourceRole === action.targetId)
   if (targeted) return [targeted]
-  if (action.type === 'trade' || action.type === 'probe') return unknown.slice(0, 1)
+  if (action.type === 'trade' || action.type === 'probe')
+    return unknown.slice(0, 1)
   return []
 }
 
@@ -44,7 +50,10 @@ const lockedFinaleMessage = (state: SessionState): GameMessage => ({
   },
 })
 
-export const ruleAction = (state: SessionState, action: ParsedAction): RulingResult => {
+export const ruleAction = (
+  state: SessionState,
+  action: ParsedAction,
+): RulingResult => {
   const definition = actions[action.type]
   const requiredComposure = definition.cost.composure ?? 0
   const requiredFavor = definition.cost.favor ?? 0
@@ -75,7 +84,14 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
 
   const addedClues = filterLegalClues(state, findClue(state, action))
   const nextRound = state.round + 1
-  const riskDelta = definition.baseRisk + (state.round > 4 && !definition.terminal ? 5 : 0)
+  const riskDelta =
+    definition.baseRisk + (state.round > 4 && !definition.terminal ? 5 : 0)
+  const streetRuling = advanceStreetState(
+    state.streetState,
+    state.truth,
+    action,
+    addedClues.length,
+  )
   const narration: GameMessage = {
     id: `action-${nextRound}`,
     sender: 'district',
@@ -88,6 +104,7 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
     ...state,
     round: nextRound,
     risk: clampRisk(state.risk + riskDelta),
+    streetState: streetRuling.nextState,
     composure: state.composure - requiredComposure,
     favor: state.favor - requiredFavor,
     knownClues: [...state.knownClues, ...addedClues],
@@ -99,10 +116,10 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
       spentComposure: requiredComposure,
       spentFavor: requiredFavor,
       addedClueIds: addedClues.map((clue) => clue.id),
+      streetDelta: streetRuling.delta,
     },
   }
-  const directorMessages = directNextBeat(nextState)
-  const agentMessages = simulateRoleAgents(nextState)
+  const autonomousRuling = simulateRoleAgents(nextState, action)
   const clueMessages: GameMessage[] = addedClues.map((clue) => ({
     id: `clue-${clue.id}`,
     sender: clue.sourceRole ?? 'district',
@@ -110,16 +127,31 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
     round: nextRound,
     text: clue.detail,
   }))
-  const addedMessages = [narration, ...directorMessages, ...agentMessages, ...clueMessages]
-  nextState = { ...nextState, messages: [...state.messages, ...addedMessages] }
+  const addedMessages = [
+    narration,
+    ...autonomousRuling.messages,
+    ...clueMessages,
+  ]
+  nextState = {
+    ...nextState,
+    autonomousActorIds: autonomousRuling.actorIds,
+    messages: [...state.messages, ...addedMessages],
+  }
 
   if (definition.terminal) {
-    const rightDecision = action.type === state.truth.idealFinalAction && action.targetId === state.truth.idealTarget
+    const rightDecision =
+      action.type === state.truth.idealFinalAction &&
+      action.targetId === state.truth.idealTarget
     const evidenceReady = state.knownClues.length + addedClues.length >= 2
     nextState = {
       ...nextState,
       status: 'finished',
-      result: rightDecision && evidenceReady ? 'success' : rightDecision ? 'partial' : 'failure',
+      result:
+        rightDecision && evidenceReady
+          ? 'success'
+          : rightDecision
+            ? 'partial'
+            : 'failure',
     }
   }
 
@@ -130,6 +162,10 @@ export const ruleAction = (state: SessionState, action: ParsedAction): RulingRes
     addedMessages,
     riskDelta,
     resourceSpent:
-      requiredComposure > 0 ? `-${requiredComposure} composure` : requiredFavor > 0 ? `-${requiredFavor} favor` : '',
+      requiredComposure > 0
+        ? `-${requiredComposure} composure`
+        : requiredFavor > 0
+          ? `-${requiredFavor} favor`
+          : '',
   }
 }

@@ -4,8 +4,11 @@ import type { GameMessage } from './message'
 import type { RoleId, RoleSlot } from './role'
 import type { ActorPerformance } from './ai'
 import type { ActionType } from './action'
+import type { V3CharacterId, V3StreetMeterCopy } from './v3Narrative'
 
 export type SessionStatus = 'briefing' | 'active' | 'finished'
+export type StreetMeterId = V3StreetMeterCopy['id']
+export type StreetState = Record<StreetMeterId, number>
 
 export type SessionState = {
   seed: string
@@ -15,6 +18,8 @@ export type SessionState = {
   status: SessionStatus
   round: number
   risk: number
+  streetState: StreetState
+  autonomousActorIds: V3CharacterId[]
   composure: number
   favor: number
   locationId: string
@@ -29,6 +34,7 @@ export type SessionState = {
     spentComposure: number
     spentFavor: number
     addedClueIds: string[]
+    streetDelta: StreetState
   }
 }
 

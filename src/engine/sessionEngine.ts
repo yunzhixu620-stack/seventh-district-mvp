@@ -1,40 +1,43 @@
-import { openingBroadcasts, openingWhispers } from '../data/messages'
+import {
+  v3CharacterLabels,
+  v3PublicMessages,
+  v3RuntimeRoleByActor,
+} from '../data/narrative/v3'
 import { roleById } from '../data/roles'
 import type { RoleId } from '../types/role'
 import type { SessionState } from '../types/world'
 import { selectTruthBySeed } from './seedEngine'
+import { createInitialStreetState } from './streetStateEngine'
 
 export const createSession = (roleId: RoleId, seed: string): SessionState => {
   const role = roleById[roleId]
+  const truth = selectTruthBySeed(seed)
   return {
     seed,
     roleId,
     role,
-    truth: selectTruthBySeed(seed),
+    truth,
     status: 'briefing',
     round: 0,
     risk: 12,
+    streetState: createInitialStreetState(truth),
+    autonomousActorIds: [],
     composure: role.resources.composure,
     favor: role.resources.favor,
     locationId: 'kiosk',
     knownClues: [],
     history: [],
-    messages: [
-      ...openingBroadcasts.map((text, index) => ({
-        id: `opening-public-${index}`,
-        channel: 'public' as const,
-        sender: index === 0 ? ('systemProxy' as const) : ('leaker' as const),
+    messages: v3PublicMessages
+      .filter((message) => message.trigger === 'opening')
+      .map((message) => ({
+        id: message.id,
+        actorId: message.sender,
+        channel: message.channel,
+        sender: v3RuntimeRoleByActor[message.sender] ?? 'district',
+        displaySender: v3CharacterLabels[message.sender],
         round: 0,
-        text,
+        text: { zhCN: message.body, en: message.body },
       })),
-      {
-        id: 'opening-private',
-        channel: 'private',
-        sender: roleId === 'keeper' ? 'protector' : 'keeper',
-        round: 0,
-        text: openingWhispers[roleId],
-      },
-    ],
   }
 }
 

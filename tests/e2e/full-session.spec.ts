@@ -9,7 +9,7 @@ test('player can enter, investigate, switch language, and close a session', asyn
       contentType: 'application/json',
       body: JSON.stringify({
         line: 'You finally asked a question worth answering.',
-        gesture: 'He Lan rubs rain from the envelope seal.',
+        gesture: 'Lao Zhou rubs rain from the envelope seal.',
         subtext:
           'Your wording made her defensive, but she gave you something concrete.',
         mood: 'guarded',
@@ -46,7 +46,7 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await page.locator('select').selectOption('leaker')
   await page
     .getByPlaceholder(
-      'Example: He Lan, you know when that seal was set, do you not?',
+      'Example: Lao Zhou, you know when that seal was set, do you not?',
     )
     .fill('probe Frequency 7 about the edited post')
   await page.getByRole('button', { name: 'Ready the line' }).click()
@@ -85,7 +85,7 @@ test('a role cannot shortcut the incident with immediate protection', async ({
 
   await page
     .getByPlaceholder(
-      'Example: He Lan, you know when that seal was set, do you not?',
+      'Example: Lao Zhou, you know when that seal was set, do you not?',
     )
     .fill('protect Zhao Jing now')
   await page.getByRole('button', { name: 'Ready the line' }).click()
@@ -96,4 +96,59 @@ test('a role cannot shortcut the incident with immediate protection', async ({
     page.getByRole('dialog').getByRole('button', { name: 'Say it' }),
   ).toBeDisabled()
   await expect(page.getByText('Session Replay Report')).not.toBeVisible()
+})
+
+test('street pressure and other roles move after the player acts', async ({
+  page,
+}) => {
+  await page.goto('./')
+  await page.getByRole('link', { name: '进入夜局' }).click()
+  await page
+    .locator('.role-option')
+    .filter({ hasText: '外来调查者' })
+    .getByRole('button')
+    .click()
+  await page.getByRole('button', { name: '进入现场' }).click()
+
+  await expect(page.getByText('街区热度')).toBeVisible()
+  await expect(page.getByTestId('street-meter-streetHeat')).toHaveAttribute(
+    'data-value',
+    '12',
+  )
+  await page.getByRole('button', { name: /询问/ }).click()
+  await page.getByRole('button', { name: '说出口' }).click()
+  await expect(page.getByTestId('street-meter-streetHeat')).toHaveAttribute(
+    'data-value',
+    '19',
+  )
+  await expect(page.getByText('动向').first()).toBeVisible()
+
+  await page.locator('select').selectOption('seeker')
+  await page.getByRole('button', { name: /试探/ }).click()
+  await page.getByRole('button', { name: '说出口' }).click()
+  await page.locator('select').selectOption('leaker')
+  await page.getByRole('button', { name: /交换信息/ }).click()
+  await page.getByRole('button', { name: '说出口' }).click()
+
+  const publicEvents = page.locator('.message-list article')
+  await expect(
+    publicEvents
+      .filter({ hasText: '老周短暂关闭便利店门口的灯。' })
+      .getByText('动向'),
+  ).toBeVisible()
+  await expect(
+    publicEvents
+      .filter({
+        hasText: '江池向玩家提出交易，用半真半假的信息换取便利店线索。',
+      })
+      .getByText('动向'),
+  ).toBeVisible()
+  await expect(page.getByText('舆论').first()).toBeVisible()
+  await page.getByRole('tab', { name: '私信' }).click()
+  await expect(
+    page
+      .locator('.message-list article')
+      .filter({ hasText: '我有截图。' })
+      .getByText('私下行动'),
+  ).toBeVisible()
 })

@@ -3,6 +3,7 @@ import { ui } from '../data/uiCopy'
 import { localize } from '../types/i18n'
 import type { RoleId } from '../types/role'
 import { useGameStore } from '../store/gameStore'
+import { v3StreetStateCopy } from '../data/narrative/v3'
 
 export function LivePerformance({ targetId }: { targetId: RoleId }) {
   const { language, session, actorLoading } = useGameStore()
@@ -65,6 +66,15 @@ export function LivePerformance({ targetId }: { targetId: RoleId }) {
               {localize(ui.newEvidence, language)} +{effect.addedClueIds.length}
             </span>
           )}
+          <b>{localize(ui.pressureChanged, language)}</b>
+          {v3StreetStateCopy
+            .filter((meter) => effect.streetDelta[meter.id] !== 0)
+            .map((meter) => (
+              <span key={meter.id} className="street-change">
+                {meter.name} {effect.streetDelta[meter.id] > 0 ? '+' : ''}
+                {effect.streetDelta[meter.id]}
+              </span>
+            ))}
         </div>
       )}
     </section>

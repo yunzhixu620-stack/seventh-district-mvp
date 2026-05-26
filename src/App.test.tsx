@@ -61,4 +61,24 @@ describe('playable navigation and localization', () => {
       screen.getByText(/至少识别一名正在误导公共频道的角色/),
     ).toBeInTheDocument()
   })
+
+  it('shows inspectable street state after entering the night session', async () => {
+    const user = userEvent.setup()
+    render(
+      <MemoryRouter initialEntries={['/roles']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    await user.click(
+      screen.getAllByRole('button', { name: '选择并接收简报' })[0],
+    )
+    await user.click(screen.getByRole('button', { name: '进入现场' }))
+
+    expect(screen.getByText('街区状态')).toBeInTheDocument()
+    expect(screen.getByText('街区热度')).toBeInTheDocument()
+    expect(screen.getByText('管理员关注')).toBeInTheDocument()
+    expect(screen.getByText('证据风险')).toBeInTheDocument()
+    expect(screen.getByText('公共舆论')).toBeInTheDocument()
+  })
 })
