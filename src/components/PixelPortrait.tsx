@@ -1,4 +1,5 @@
 import { npcProfiles } from '../data/npcs'
+import { v3RoleForRuntimeId } from '../data/narrative/v3'
 import { roleById } from '../data/roles'
 import { localize, type Language } from '../types/i18n'
 import type { RoleId } from '../types/role'
@@ -23,7 +24,9 @@ export function PixelPortrait({
         <i className="coat" />
       </span>
       <strong>{localize(npcProfiles[roleId].callSign, language)}</strong>
-      <small>{localize(roleById[roleId].name, language)}</small>
+      <small>
+        {language === 'zhCN' ? v3RoleForRuntimeId(roleId).name : localize(roleById[roleId].name, language)}
+      </small>
     </>
   )
   return onClick ? (

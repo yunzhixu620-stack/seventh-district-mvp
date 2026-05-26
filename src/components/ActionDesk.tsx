@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { actionOrder, actions } from '../data/actions'
+import { v3RoleForRuntimeId } from '../data/narrative/v3'
 import { npcProfiles } from '../data/npcs'
 import { roleById } from '../data/roles'
 import { ui } from '../data/uiCopy'
@@ -56,7 +57,7 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
           <select value={selectedTargetId} onChange={(event) => setTarget(event.target.value as RoleId)}>
             {targets.map((id) => (
               <option key={id} value={id}>
-                {localize(npcProfiles[id].callSign, language)} / {localize(roleById[id].name, language)}
+                {localize(npcProfiles[id].callSign, language)} / {language === 'zhCN' ? v3RoleForRuntimeId(id).name : localize(roleById[id].name, language)}
               </option>
             ))}
           </select>

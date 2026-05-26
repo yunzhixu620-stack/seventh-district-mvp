@@ -29,7 +29,7 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await page.getByRole('button', { name: /Probe/ }).click()
   await expect(page.getByRole('dialog')).toContainText('Probe')
   await page.getByRole('button', { name: 'Say it' }).click()
-  await expect(page.getByText('LIVE AI RESPONSE')).toBeVisible()
+  await expect(page.getByText('CHARACTER RESPONSE')).toBeVisible()
   await expect(page.getByText('You finally asked a question worth answering.')).toBeVisible()
   await page.getByRole('tab', { name: /Clues/ }).click()
   await expect(page.locator('.clue-list article')).toHaveCount(1)

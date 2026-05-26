@@ -1,6 +1,7 @@
 import { locations } from '../data/locations'
 import { ui } from '../data/uiCopy'
 import { linxiaEnvelope } from '../data/episode001_linxiaEnvelope'
+import { linxiaEnvelopeOpening } from '../data/narrative/v3'
 import { localize } from '../types/i18n'
 import { useGameStore } from '../store/gameStore'
 import { PixelPortrait } from './PixelPortrait'
@@ -39,7 +40,14 @@ export function ScenePanel() {
       </div>
       <LivePerformance targetId={selectedTargetId} />
       <div className="scene-footer">
-        <p>{localize(linxiaEnvelope.premise, language)}</p>
+        {language === 'zhCN' ? (
+          <details className="v3-opening">
+            <summary>开场简报：林夏不见了，展开查看前情</summary>
+            <p>{linxiaEnvelopeOpening.body}</p>
+          </details>
+        ) : (
+          <p>{localize(linxiaEnvelope.premise, language)}</p>
+        )}
         <nav className="scene-choices">
           {linxiaEnvelope.locations.map((locationId) => (
             <button

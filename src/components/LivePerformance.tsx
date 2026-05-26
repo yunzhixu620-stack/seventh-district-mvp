@@ -30,7 +30,6 @@ export function LivePerformance({ targetId }: { targetId: RoleId }) {
           <p className="gesture">{performance.gesture}</p>
           <footer>
             <span>{localize(ui.subtext, language)}: {performance.subtext}</span>
-            <small>{performance.model}</small>
           </footer>
         </>
       ) : (
