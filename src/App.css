@@ -509,6 +509,64 @@
   margin: 13px 0 11px;
 }
 
+.street-state-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.street-meter {
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+}
+
+.street-meter summary {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 1fr auto auto;
+  list-style: none;
+}
+
+.street-meter summary::-webkit-details-marker {
+  display: none;
+}
+
+.street-meter summary span {
+  color: #c3ccd7;
+  font-size: 12px;
+}
+
+.street-meter summary strong {
+  color: var(--gold);
+  font-size: 11px;
+}
+
+.street-meter summary small {
+  color: var(--muted);
+  min-width: 24px;
+  text-align: right;
+}
+
+.meter-track {
+  background: #172334;
+  height: 4px;
+  margin-top: 8px;
+}
+
+.meter-track i {
+  background: linear-gradient(90deg, var(--cyan), var(--warning));
+  display: block;
+  height: 100%;
+}
+
+.street-meter p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
 .location-panel p:last-child {
   color: var(--muted);
   font-size: 14px;
@@ -713,6 +771,28 @@
 .clue-list p {
   color: #c3ccd7;
   font-size: 14px;
+}
+
+.activity-tag {
+  border: 1px solid #33475d;
+  color: var(--cyan);
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  padding: 3px 6px;
+}
+
+.activity-tag.rumor {
+  color: var(--gold);
+}
+
+.activity-tag.intervention {
+  color: var(--danger);
+}
+
+.activity-tag.privateMove {
+  color: #b695e6;
 }
 
 .clue-list h3 {
@@ -1365,6 +1445,10 @@ html[data-reduce-motion='true'] *::after {
   background: var(--gold);
   border-color: var(--gold);
   color: #161108;
+}
+
+.effect-strip .street-change {
+  color: var(--cyan);
 }
 
 .scene-footer {

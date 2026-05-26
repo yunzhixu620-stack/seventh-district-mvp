@@ -1,5 +1,10 @@
 export { v3ActionFeedback } from './actionFeedback'
 export { v3AutonomousActions } from './autonomousActions'
+export {
+  v3ActorForRuntimeRole,
+  v3CharacterLabels,
+  v3RuntimeRoleByActor,
+} from './characterLabels'
 export { envelopeNarratives, v3Clues } from './clues'
 export { v3Endings } from './endings'
 export { v3RoleForRuntimeId } from './entryPresentation'

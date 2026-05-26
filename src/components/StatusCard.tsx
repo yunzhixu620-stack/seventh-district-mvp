@@ -1,6 +1,7 @@
 import { locations } from '../data/locations'
-import { v3RoleForRuntimeId } from '../data/narrative/v3'
+import { v3RoleForRuntimeId, v3StreetStateCopy } from '../data/narrative/v3'
 import { ui } from '../data/uiCopy'
+import { streetLevelIndex } from '../engine/streetStateEngine'
 import { localize } from '../types/i18n'
 import { useGameStore } from '../store/gameStore'
 
@@ -44,6 +45,32 @@ export function StatusCard() {
           <strong>{session.risk}%</strong>
           <span>{t('exposure')}</span>
         </div>
+      </div>
+      <div className="panel street-state-panel">
+        <p className="eyebrow">{t('streetState')}</p>
+        {v3StreetStateCopy.map((meter) => {
+          const value = session.streetState[meter.id]
+          const level = meter.levels[streetLevelIndex(value)]
+
+          return (
+            <details
+              className="street-meter"
+              data-testid={`street-meter-${meter.id}`}
+              data-value={value}
+              key={meter.id}
+            >
+              <summary>
+                <span>{meter.name}</span>
+                <strong>{level.label}</strong>
+                <small>{value}</small>
+              </summary>
+              <div className="meter-track">
+                <i style={{ width: `${value}%` }} />
+              </div>
+              <p>{level.body}</p>
+            </details>
+          )
+        })}
       </div>
       <div className="panel location-panel">
         <p className="eyebrow">{t('currentSituation')}</p>
