@@ -2,6 +2,7 @@ export { v3ActionFeedback } from './actionFeedback'
 export { v3AutonomousActions } from './autonomousActions'
 export { envelopeNarratives, v3Clues } from './clues'
 export { v3Endings } from './endings'
+export { v3RoleForRuntimeId } from './entryPresentation'
 export {
   linxiaEnvelopeFixedRules,
   linxiaEnvelopeOpening,

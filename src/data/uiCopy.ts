@@ -4,12 +4,20 @@ export const ui = {
   title: { zhCN: '第七街区', en: 'SEVENTH DISTRICT' },
   subtitle: { zhCN: '真人测试', en: 'REAL TEST' },
   incident: { zhCN: '林夏信封事件', en: 'LINXIA ENVELOPE INCIDENT' },
-  landingTag: { zhCN: '像素悬疑互动剧 / AI 角色现场演出', en: 'PIXEL-NOIR DRAMA / LIVE AI CHARACTERS' },
+  landingTag: {
+    zhCN: '都市角色扮演夜局 / 身份未知',
+    en: 'URBAN ROLEPLAY NIGHT / HIDDEN IDENTITIES',
+  },
   start: { zhCN: '从雨夜开始', en: 'Begin in the Rain' },
-  explore: { zhCN: '你说出的每句话，都可能让一个人改变说法。', en: 'Every line you speak can make someone change their story.' },
+  explore: {
+    zhCN: '你说出的每句话，都可能让一个人改变说法。',
+    en: 'Every line you speak can make someone change their story.',
+  },
   premise: {
     zhCN: '22:40。交通网络短时离线，林夏停止回应。一封没人承认持有的信，让每一次关心都可能成为危险。',
-    en: '22:40. Transit briefly drops offline and Linxia stops responding. One envelope nobody admits holding makes every act of concern potentially dangerous.',
+    en:
+      '22:40. Transit briefly drops offline and Linxia stops responding. ' +
+      'One envelope nobody admits holding makes every act of concern potentially dangerous.',
   },
   language: { zhCN: '语言', en: 'Language' },
   soundOff: { zhCN: '声音：关闭', en: 'Sound: Off' },
@@ -19,10 +27,19 @@ export const ui = {
   seed: { zhCN: '会话种子', en: 'Session seed' },
   randomize: { zhCN: '更换种子', en: 'New seed' },
   castTitle: { zhCN: '今晚在场的人', en: 'People in the Rain Tonight' },
-  castIntro: { zhCN: '先认清谁在说话：三人可以由你接管，三人会由 AI 在局中回应、隐瞒与反击。', en: 'Know the people before you act: inhabit one of three roles while AI plays the others, answering, hiding, and pushing back.' },
-  rolesHeading: { zhCN: '你要以谁的身份开口？', en: 'Whose Voice Will You Borrow?' },
-  rolesIntro: { zhCN: '你的身份不是职业卡，而是一个必须守住的秘密。', en: 'Your role is not a job card. It is a secret you must carry.' },
-  aiControlled: { zhCN: 'AI 演出', en: 'AI performed' },
+  castIntro: {
+    zhCN: '先认清今夜可能与你周旋的人，再选择一个身份入场。',
+    en: "Know the people in tonight's session, then enter as one of them.",
+  },
+  rolesHeading: {
+    zhCN: '你要以谁的身份开口？',
+    en: 'Whose Voice Will You Borrow?',
+  },
+  rolesIntro: {
+    zhCN: '你的身份不是职业卡，而是一个必须守住的秘密。',
+    en: 'Your role is not a job card. It is a secret you must carry.',
+  },
+  sessionSeat: { zhCN: '今夜在场', en: 'In session' },
   playerReady: { zhCN: '可扮演', en: 'Playable' },
   selectRole: { zhCN: '选择并接收简报', en: 'Select and receive briefing' },
   difficulty: { zhCN: '难度', en: 'Difficulty' },
@@ -41,7 +58,10 @@ export const ui = {
   actions: { zhCN: '你要怎么开口？', en: 'How Will You Speak?' },
   chooseTarget: { zhCN: '正在面对', en: 'Facing' },
   freeform: { zhCN: '直接对他说', en: 'Say it in your own words' },
-  placeholder: { zhCN: '例如：何岚，你明明知道封蜡何时封上的，对吗？', en: 'Example: He Lan, you know when that seal was set, do you not?' },
+  placeholder: {
+    zhCN: '例如：何岚，你明明知道封蜡何时封上的，对吗？',
+    en: 'Example: He Lan, you know when that seal was set, do you not?',
+  },
   interpret: { zhCN: '准备说出', en: 'Ready the line' },
   preview: { zhCN: '你的意图被听成', en: 'Your intention reads as' },
   confirm: { zhCN: '说出口', en: 'Say it' },
@@ -50,7 +70,10 @@ export const ui = {
   public: { zhCN: '公共频道', en: 'Public channel' },
   private: { zhCN: '私信', en: 'Private messages' },
   clues: { zhCN: '线索', en: 'Clues' },
-  emptyClue: { zhCN: '你还没有真正能握住的证据。找一个人开口。', en: 'You do not yet hold a fact you can trust. Make someone speak.' },
+  emptyClue: {
+    zhCN: '你还没有真正能握住的证据。找一个人开口。',
+    en: 'You do not yet hold a fact you can trust. Make someone speak.',
+  },
   round: { zhCN: '回合', en: 'Round' },
   report: { zhCN: '结案复盘报告', en: 'Session Replay Report' },
   truthVariant: { zhCN: '本局真相', en: 'Active truth' },
@@ -61,12 +84,23 @@ export const ui = {
   replay: { zhCN: '换身份重新开始', en: 'Replay with a new role' },
   roleOutcome: { zhCN: '角色结果', en: 'Role result' },
   caseFile: { zhCN: '调查记录', en: 'Case notes' },
-  aiPromise: { zhCN: 'AI 不决定真相，但每个角色会根据你说的话现场演出。', en: 'AI cannot decide the truth, but every character performs live in response to your words.' },
-  aiLive: { zhCN: 'AI 即兴回应', en: 'LIVE AI RESPONSE' },
+  sessionRule: {
+    zhCN: '局内不公布幕后控制类型。你只能从行动、矛盾与局后报告判断。',
+    en:
+      'Control types stay hidden during play. ' +
+      'Judge only from actions, contradictions, and the post-game report.',
+  },
+  aiLive: { zhCN: '现场回应', en: 'CHARACTER RESPONSE' },
   aiReady: { zhCN: '等待你开口', en: 'WAITING FOR YOUR LINE' },
-  aiThinking: { zhCN: 'AI 正在权衡', en: 'AI IS WEIGHING ITS ANSWER' },
-  aiThinkingDetail: { zhCN: '对方没有立刻答话。雨声填满了那段沉默……', en: 'They do not answer immediately. Rain fills the silence...' },
-  chooseVoice: { zhCN: '选中一个人，说出一句只有你会说的话。', en: 'Choose someone and say a line only you would attempt.' },
+  aiThinking: { zhCN: '对方正在权衡', en: 'THEY ARE WEIGHING AN ANSWER' },
+  aiThinkingDetail: {
+    zhCN: '对方没有立刻答话。雨声填满了那段沉默……',
+    en: 'They do not answer immediately. Rain fills the silence...',
+  },
+  chooseVoice: {
+    zhCN: '选中一个人，说出一句只有你会说的话。',
+    en: 'Choose someone and say a line only you would attempt.',
+  },
   subtext: { zhCN: '你的感觉', en: 'Your read' },
   newEvidence: { zhCN: '新证据', en: 'NEW EVIDENCE' },
   consequence: { zhCN: '这句话带来的变化', en: 'WHAT YOUR LINE CHANGED' },
@@ -76,9 +110,23 @@ export const ui = {
   spentFavor: { zhCN: '人情消耗', en: 'Favor spent' },
   finaleLocked: { zhCN: '终局裁定未解锁', en: 'FINAL RULING LOCKED' },
   finaleReady: { zhCN: '终局裁定已解锁', en: 'FINAL RULING READY' },
-  finaleRequirement: { zhCN: '至少取得两条来自不同人物的可核验线索。', en: 'Obtain two verifiable clues from different people.' },
-  finaleSatisfied: { zhCN: '你已有足够证据，可以提交最终判断。', en: 'You have enough evidence to submit a final judgment.' },
-  finaleTarget: { zhCN: '保护或揭示将作用于当前面对的人：', en: 'Protect or Reveal will judge the person you face: ' },
+  finaleRequirement: {
+    zhCN: '至少取得两条来自不同人物的可核验线索。',
+    en: 'Obtain two verifiable clues from different people.',
+  },
+  finaleSatisfied: {
+    zhCN: '你已有足够证据，可以提交最终判断。',
+    en: 'You have enough evidence to submit a final judgment.',
+  },
+  finaleTarget: {
+    zhCN: '保护或揭示将作用于当前面对的人：',
+    en: 'Protect or Reveal will judge the person you face: ',
+  },
   evidenceProgress: { zhCN: '证据进度', en: 'Evidence progress' },
-  finalBlockedPreview: { zhCN: '现在下结论只是在猜。继续调查，终局行动不会在证据不足时生效。', en: 'A final call now would be a guess. Keep investigating; final actions cannot resolve the case without evidence.' },
+  finalBlockedPreview: {
+    zhCN: '现在下结论只是在猜。继续调查，终局行动不会在证据不足时生效。',
+    en:
+      'A final call now would be a guess. Keep investigating; ' +
+      'final actions cannot resolve the case without evidence.',
+  },
 } satisfies Record<string, LocalizedText>
