@@ -25,16 +25,25 @@ export function LandingPage() {
         </h1>
         <p className="hero-pitch v3-intro">{introduction}</p>
         <p className="night-rule">{sessionRule}</p>
-        <Link className="primary-link" to="/roles">{enterLabel}</Link>
+        <Link className="primary-link" to="/roles">
+          {enterLabel}
+        </Link>
       </div>
-      <div className="incident-card cg-card" aria-label={localize(linxiaEnvelope.title, language)}>
-        <div className="signal"><span /> SIGNAL LOST / 22:40</div>
+      <div
+        className="incident-card cg-card"
+        aria-label={localize(linxiaEnvelope.title, language)}
+      >
+        <div className="signal">
+          <span /> SIGNAL LOST / 22:40
+        </div>
         <img src={`${import.meta.env.BASE_URL}art/rain-kiosk.svg`} alt="" />
         <p className="eyebrow">{t('incident')}</p>
         <p>{t('explore')}</p>
         <div className="incident-stats">
           <span>{language === 'zhCN' ? '06 名参与者' : '06 PARTICIPANTS'}</span>
-          <span>{language === 'zhCN' ? '04 种真相' : '04 SHIFTING TRUTHS'}</span>
+          <span>
+            {language === 'zhCN' ? '04 种真相' : '04 SHIFTING TRUTHS'}
+          </span>
           <span>{language === 'zhCN' ? '身份未知' : 'IDENTITIES HIDDEN'}</span>
         </div>
       </div>

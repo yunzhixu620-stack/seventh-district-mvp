@@ -10,9 +10,12 @@ import type { RoleId } from '../types/role'
 import { roleById } from '../data/roles'
 
 export function ScenePanel() {
-  const { session, language, setLocation, selectedTargetId, setTarget } = useGameStore()
+  const { session, language, setLocation, selectedTargetId, setTarget } =
+    useGameStore()
   if (!session) return null
-  const visibleRoles = Object.keys(roleById).filter((roleId) => roleId !== session.roleId) as RoleId[]
+  const visibleRoles = Object.keys(roleById).filter(
+    (roleId) => roleId !== session.roleId,
+  ) as RoleId[]
   const sceneAsset = {
     kiosk: 'rain-kiosk.svg',
     arcade: 'arcade.svg',
@@ -23,10 +26,15 @@ export function ScenePanel() {
       <div className="scene-screen">
         <img src={`${import.meta.env.BASE_URL}art/${sceneAsset}`} alt="" />
         <div className="scene-caption">
-          <p className="eyebrow">{localize(locations[session.locationId].name, language)}</p>
+          <p className="eyebrow">
+            {localize(locations[session.locationId].name, language)}
+          </p>
           <p>{localize(locations[session.locationId].atmosphere, language)}</p>
         </div>
-        <div className="stage-cast" aria-label={localize(ui.castTitle, language)}>
+        <div
+          className="stage-cast"
+          aria-label={localize(ui.castTitle, language)}
+        >
           {visibleRoles.map((roleId) => (
             <PixelPortrait
               key={roleId}

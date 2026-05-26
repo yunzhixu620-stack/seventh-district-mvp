@@ -20,8 +20,12 @@ export function BriefingPage() {
   return (
     <main className="briefing-page">
       <section className="briefing-card">
-        <p className="eyebrow">{t('briefing')} / {session.seed}</p>
-        <h1>{isV3Chinese ? v3Role.name : localize(session.role.name, language)}</h1>
+        <p className="eyebrow">
+          {t('briefing')} / {session.seed}
+        </p>
+        <h1>
+          {isV3Chinese ? v3Role.name : localize(session.role.name, language)}
+        </h1>
         {isV3Chinese ? (
           <>
             <p className="briefing-narrative">{v3Role.briefingText}</p>
@@ -33,17 +37,35 @@ export function BriefingPage() {
           </>
         ) : (
           <dl>
-            <div><dt>{t('publicFace')}</dt><dd>{localize(session.role.publicIdentity, language)}</dd></div>
-            <div><dt>{t('hidden')}</dt><dd>{localize(session.role.hiddenIdentity, language)}</dd></div>
-            <div><dt>{t('objective')}</dt><dd>{localize(session.role.personalGoal, language)}</dd></div>
-            <div><dt>{t('knowledge')}</dt><dd>{localize(session.role.privateKnowledge[0], language)}</dd></div>
+            <div>
+              <dt>{t('publicFace')}</dt>
+              <dd>{localize(session.role.publicIdentity, language)}</dd>
+            </div>
+            <div>
+              <dt>{t('hidden')}</dt>
+              <dd>{localize(session.role.hiddenIdentity, language)}</dd>
+            </div>
+            <div>
+              <dt>{t('objective')}</dt>
+              <dd>{localize(session.role.personalGoal, language)}</dd>
+            </div>
+            <div>
+              <dt>{t('knowledge')}</dt>
+              <dd>{localize(session.role.privateKnowledge[0], language)}</dd>
+            </div>
           </dl>
         )}
         <div className="brief-resources">
-          <span>{t('composure')} <strong>{session.composure}</strong></span>
-          <span>{t('favors')} <strong>{session.favor}</strong></span>
+          <span>
+            {t('composure')} <strong>{session.composure}</strong>
+          </span>
+          <span>
+            {t('favors')} <strong>{session.favor}</strong>
+          </span>
         </div>
-        <button className="primary-button" onClick={begin}>{t('enter')}</button>
+        <button className="primary-button" onClick={begin}>
+          {t('enter')}
+        </button>
       </section>
     </main>
   )

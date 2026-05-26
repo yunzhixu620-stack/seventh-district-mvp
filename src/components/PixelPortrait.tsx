@@ -25,12 +25,16 @@ export function PixelPortrait({
       </span>
       <strong>{localize(npcProfiles[roleId].callSign, language)}</strong>
       <small>
-        {language === 'zhCN' ? v3RoleForRuntimeId(roleId).name : localize(roleById[roleId].name, language)}
+        {language === 'zhCN'
+          ? v3RoleForRuntimeId(roleId).name
+          : localize(roleById[roleId].name, language)}
       </small>
     </>
   )
   return onClick ? (
-    <button className={`portrait ${active ? 'active' : ''}`} onClick={onClick}>{content}</button>
+    <button className={`portrait ${active ? 'active' : ''}`} onClick={onClick}>
+      {content}
+    </button>
   ) : (
     <div className={`portrait ${active ? 'active' : ''}`}>{content}</div>
   )
