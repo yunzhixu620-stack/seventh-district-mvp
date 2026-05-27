@@ -6,7 +6,7 @@ import type {
   V3EndingNarrative,
   V3TruthVariant,
 } from './v3Narrative'
-import type { SessionState } from './world'
+import type { IdentityGuess, SessionState } from './world'
 
 export type V3RevealControlType = V3ControlType | 'player'
 
@@ -18,6 +18,8 @@ export type V3RoleReveal = {
   goal: string
   achieved: boolean
   misledPlayer: boolean
+  guess?: IdentityGuess
+  guessResult?: 'correct' | 'incorrect' | 'uncertain'
 }
 
 export type V3MisdirectionSource = {
@@ -41,6 +43,12 @@ export type ReplayReport = {
     ending: V3EndingNarrative
     roles: V3RoleReveal[]
     misdirectionSources: V3MisdirectionSource[]
-    identityJudgmentRecorded: false
+    identityJudgmentRecorded: boolean
+    identityGuessSkipped: boolean
+    identitySummary: {
+      correct: number
+      incorrect: number
+      uncertain: number
+    }
   }
 }

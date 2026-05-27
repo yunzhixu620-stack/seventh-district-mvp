@@ -9,14 +9,15 @@ export function BoardPage() {
   const navigate = useNavigate()
   const session = useGameStore((state) => state.session)
   if (!session) return <Navigate to="/roles" replace />
-  if (session.status === 'finished') return <Navigate to="/report" replace />
+  if (session.status === 'finished')
+    return <Navigate to="/identity-guess" replace />
 
   return (
     <main className="situation-board v2-board">
       <StatusCard />
       <div className="board-center">
         <ScenePanel />
-        <ActionDesk onFinished={() => navigate('/report')} />
+        <ActionDesk onFinished={() => navigate('/identity-guess')} />
       </div>
       <IntelBoard />
     </main>

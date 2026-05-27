@@ -11,7 +11,7 @@ import { requestActorPerformance } from '../providers/liveActorProvider'
 import type { ActionType, ParsedAction } from '../types/action'
 import type { Language } from '../types/i18n'
 import type { RoleId } from '../types/role'
-import type { SessionState } from '../types/world'
+import type { IdentityGuess, SessionState } from '../types/world'
 
 type Preferences = {
   language: Language
@@ -41,6 +41,8 @@ type GameStore = Preferences & {
   previewText: (input: string) => void
   cancelPreview: () => void
   commitAction: () => Promise<SessionState | undefined>
+  setIdentityGuess: (roleId: RoleId, guess: IdentityGuess) => void
+  completeIdentityGuess: (skipped?: boolean) => void
   resetRun: () => void
 }
 
@@ -138,6 +140,45 @@ export const useGameStore = create<GameStore>()(
         }
         return nextState
       },
+      setIdentityGuess: (roleId, guess) =>
+        set((state) =>
+          state.session
+            ? {
+                session: {
+                  ...state.session,
+                  identityGuesses: {
+                    ...state.session.identityGuesses,
+                    [roleId]: guess,
+                  },
+                },
+              }
+            : state,
+        ),
+      completeIdentityGuess: (skipped = false) =>
+        set((state) => {
+          if (!state.session) return state
+
+          const guesses = (Object.keys(roleById) as RoleId[])
+            .filter((roleId) => roleId !== state.session?.roleId)
+            .reduce(
+              (result, roleId) => ({
+                ...result,
+                [roleId]: skipped
+                  ? 'uncertain'
+                  : (state.session?.identityGuesses[roleId] ?? 'uncertain'),
+              }),
+              {},
+            )
+
+          return {
+            session: {
+              ...state.session,
+              identityGuesses: guesses,
+              identityGuessSubmitted: true,
+              identityGuessSkipped: skipped,
+            },
+          }
+        }),
       resetRun: () =>
         set((state) => ({
           selectedRoleId: undefined,

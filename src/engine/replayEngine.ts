@@ -9,13 +9,13 @@ import {
 } from '../data/narrative/v3'
 import { npcProfiles } from '../data/npcs'
 import type { RoleId } from '../types/role'
-import type { ReplayReport } from '../types/replay'
+import type { ReplayReport, V3RevealControlType } from '../types/replay'
 import type {
   V3ControlType,
   V3EndingNarrative,
   V3TruthVariant,
 } from '../types/v3Narrative'
-import type { SessionState } from '../types/world'
+import type { IdentityGuess, SessionState } from '../types/world'
 
 const reportRoles: RoleId[] = [
   'investigator',
@@ -49,12 +49,61 @@ const v3TruthFor = (state: SessionState): V3TruthVariant =>
     (truth) => truth.id === v3TruthIdByRuntimeTruth[state.truth.id],
   ) ?? v3TruthVariants[0]
 
+const controlTypeFor = (
+  state: SessionState,
+  roleId: RoleId,
+): V3RevealControlType => {
+  if (roleId === state.roleId) return 'player'
+  if (roleId === 'investigator') return 'fixedNpc'
+  return controlTypeByRole[roleId]
+}
+
+const guessMatchingControlType = (
+  controlType: V3RevealControlType,
+): IdentityGuess | undefined => {
+  if (controlType === 'player') return undefined
+  if (controlType === 'vacantHumanSlot') return 'humanSlot'
+  return controlType
+}
+
+const guessResultFor = (
+  state: SessionState,
+  roleId: RoleId,
+  controlType: V3RevealControlType,
+) => {
+  if (roleId === state.roleId) return undefined
+  const guess = state.identityGuesses[roleId] ?? 'uncertain'
+
+  if (guess === 'uncertain') return 'uncertain' as const
+  return guess === guessMatchingControlType(controlType)
+    ? ('correct' as const)
+    : ('incorrect' as const)
+}
+
+const identitySummaryFor = (state: SessionState) =>
+  reportRoles.reduce(
+    (summary, roleId) => {
+      const result = guessResultFor(state, roleId, controlTypeFor(state, roleId))
+      if (result) summary[result] += 1
+      return summary
+    },
+    { correct: 0, incorrect: 0, uncertain: 0 },
+  )
+
 const v3EndingFor = (state: SessionState): V3EndingNarrative => {
   const finalAction = state.history[state.history.length - 1]
+  const identitySummary = identitySummaryFor(state)
+  const evaluatedGuesses = identitySummary.correct + identitySummary.incorrect
   let endingId = 'envelopeTraded'
 
   if (state.truth.id === 'borrowed-name' && state.result !== 'success') {
     endingId = 'administratorTakesOver'
+  } else if (
+    state.result === 'success' &&
+    evaluatedGuesses === 3 &&
+    identitySummary.correct === 2
+  ) {
+    endingId = 'identifiedHumanTest'
   } else if (finalAction?.type === 'protect' && state.result === 'success') {
     endingId = 'protectedLinxia'
   } else if (finalAction?.type === 'reveal') {
@@ -110,6 +159,11 @@ const misdirectionSourcesFor = (state: SessionState) => {
 
 const buildV3Reveal = (state: SessionState): ReplayReport['v3Reveal'] => {
   const misdirectionSources = misdirectionSourcesFor(state)
+  const identitySummary = identitySummaryFor(state)
+  const identityJudgmentRecorded =
+    state.identityGuessSubmitted &&
+    !state.identityGuessSkipped &&
+    identitySummary.correct + identitySummary.incorrect > 0
 
   return {
     heading: v3PostGameHeading.body,
@@ -118,12 +172,8 @@ const buildV3Reveal = (state: SessionState): ReplayReport['v3Reveal'] => {
     ending: v3EndingFor(state),
     roles: reportRoles.map((roleId) => {
       const actorId = v3ActorForRuntimeRole[roleId]
-      const controlType =
-        roleId === state.roleId
-          ? 'player'
-          : roleId === 'investigator'
-            ? 'fixedNpc'
-            : controlTypeByRole[roleId]
+      const controlType = controlTypeFor(state, roleId)
+      const guess = state.identityGuesses[roleId]
 
       return {
         roleId,
@@ -139,10 +189,14 @@ const buildV3Reveal = (state: SessionState): ReplayReport['v3Reveal'] => {
           misdirectionSources.some(
             (source) => source.actorName === v3CharacterLabels[actorId],
           ),
+        guess,
+        guessResult: guessResultFor(state, roleId, controlType),
       }
     }),
     misdirectionSources,
-    identityJudgmentRecorded: false,
+    identityJudgmentRecorded,
+    identityGuessSkipped: state.identityGuessSkipped,
+    identitySummary,
   }
 }
 

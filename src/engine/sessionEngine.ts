@@ -27,6 +27,9 @@ export const createSession = (roleId: RoleId, seed: string): SessionState => {
     locationId: 'kiosk',
     knownClues: [],
     history: [],
+    identityGuesses: {},
+    identityGuessSubmitted: false,
+    identityGuessSkipped: false,
     messages: v3PublicMessages
       .filter((message) => message.trigger === 'opening')
       .map((message) => ({
