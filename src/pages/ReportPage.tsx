@@ -4,12 +4,29 @@ import { buildReplayReport } from '../engine/replayEngine'
 import { ui } from '../data/uiCopy'
 import { localize } from '../types/i18n'
 import { useGameStore } from '../store/gameStore'
+import type { IdentityGuess } from '../types/world'
+
+const guessLabelByType: Record<IdentityGuess, keyof typeof ui> = {
+  humanSlot: 'guessHumanSlot',
+  aiAgent: 'guessAiAgent',
+  fixedNpc: 'guessFixedNpc',
+  systemProxy: 'guessSystemProxy',
+  uncertain: 'guessUncertain',
+}
+
+const resultLabelByType = {
+  correct: 'identityCorrect',
+  incorrect: 'identityIncorrect',
+  uncertain: 'identityUncertain',
+} as const
 
 export function ReportPage() {
   const navigate = useNavigate()
   const { session, language, resetRun } = useGameStore()
   if (!session || session.status !== 'finished')
     return <Navigate to="/roles" replace />
+  if (!session.identityGuessSubmitted)
+    return <Navigate to="/identity-guess" replace />
   const report = buildReplayReport(session)
   const t = (key: keyof typeof ui) => localize(ui[key], language)
   const rulingLabel =
@@ -100,7 +117,56 @@ export function ReportPage() {
             </div>
           )}
           <h3>{t('identityJudgment')}</h3>
-          <p>{t('identityNotRecorded')}</p>
+          {report.v3Reveal.identityJudgmentRecorded ? (
+            <>
+              <p className="identity-summary">
+                {t('identityCorrect')}: {report.v3Reveal.identitySummary.correct}{' '}
+                / {t('identityIncorrect')}:{' '}
+                {report.v3Reveal.identitySummary.incorrect} /{' '}
+                {t('identityUncertain')}:{' '}
+                {report.v3Reveal.identitySummary.uncertain}
+              </p>
+              <div className="identity-results">
+                {report.v3Reveal.roles
+                  .filter((role) => role.guessResult && role.guess)
+                  .map((role) => (
+                    <article key={role.roleId}>
+                      <header>
+                        <strong>{localize(role.actorName, language)}</strong>
+                        <b className={role.guessResult}>
+                          {t(resultLabelByType[role.guessResult!])}
+                        </b>
+                      </header>
+                      <p>
+                        {t('identityYourGuess')}:{' '}
+                        {t(guessLabelByType[role.guess!])}
+                      </p>
+                      <p>
+                        {t('controlType')}:{' '}
+                        {role.controlType === 'player'
+                          ? t('playerControlled')
+                          : v3ControlTypeCopy[role.controlType]}
+                      </p>
+                      {role.guessResult === 'incorrect' && (
+                        <small>
+                          {t(
+                            role.misledPlayer
+                              ? 'identityMisledReason'
+                              : 'identityNoObservedMisdirection',
+                          )}
+                        </small>
+                      )}
+                    </article>
+                  ))}
+              </div>
+            </>
+          ) : (
+            <p>
+              {report.v3Reveal.identityGuessSkipped
+                ? t('identitySkipped')
+                : t('identityNotRecorded')}
+            </p>
+          )}
         </section>
         <section className="panel">
           <p className="eyebrow">{t('actionTrail')}</p>

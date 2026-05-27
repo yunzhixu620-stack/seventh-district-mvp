@@ -55,6 +55,23 @@ test('player can enter, investigate, switch language, and close a session', asyn
 
   await page.getByRole('button', { name: /Reveal/ }).click()
   await page.getByRole('button', { name: 'Say it' }).click()
+  await expect(
+    page.getByText('Before the reveal, who do you think they are?'),
+  ).toBeVisible()
+  await expect(page.getByText('Role reveal')).not.toBeVisible()
+  await page
+    .getByRole('group', { name: /Jiang Chi/ })
+    .getByRole('button', { name: 'AI Agent' })
+    .click()
+  await page
+    .getByRole('group', { name: /A Ran/ })
+    .getByRole('button', { name: 'Fixed NPC' })
+    .click()
+  await page
+    .getByRole('group', { name: /District Admin/ })
+    .getByRole('button', { name: 'System Proxy' })
+    .click()
+  await page.getByRole('button', { name: 'Submit guesses' }).click()
   await expect(page.getByText('Session Replay Report')).toBeVisible()
   await expect(page.getByText('Ruling confirmed')).toBeVisible()
   await expect(page.getByText('Role reveal')).toBeVisible()
@@ -63,9 +80,10 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await expect(page.locator('.reveal-roster')).toContainText('系统代理')
   await expect(page.getByText('Misdirection sources')).toBeVisible()
   await expect(page.getByText('Identity judgments')).toBeVisible()
-  await expect(
-    page.getByText(/did not collect your identity guesses/),
-  ).toBeVisible()
+  await expect(page.getByText(/Correct: 2/)).toBeVisible()
+  await expect(page.getByText(/Misjudged: 1/)).toBeVisible()
+  await expect(page.getByText(/Uncertain: 2/)).toBeVisible()
+  await expect(page.getByText(/may have shaped your read/)).toBeVisible()
   await expect(page.getByText('Action trail')).toBeVisible()
 
   await page.getByRole('button', { name: 'Replay with a new role' }).click()

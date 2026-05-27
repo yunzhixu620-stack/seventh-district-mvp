@@ -9,6 +9,13 @@ import type { V3CharacterId, V3StreetMeterCopy } from './v3Narrative'
 export type SessionStatus = 'briefing' | 'active' | 'finished'
 export type StreetMeterId = V3StreetMeterCopy['id']
 export type StreetState = Record<StreetMeterId, number>
+export type IdentityGuess =
+  | 'humanSlot'
+  | 'aiAgent'
+  | 'fixedNpc'
+  | 'systemProxy'
+  | 'uncertain'
+export type IdentityGuesses = Partial<Record<RoleId, IdentityGuess>>
 
 export type SessionState = {
   seed: string
@@ -26,6 +33,9 @@ export type SessionState = {
   knownClues: Clue[]
   messages: GameMessage[]
   history: ParsedAction[]
+  identityGuesses: IdentityGuesses
+  identityGuessSubmitted: boolean
+  identityGuessSkipped: boolean
   result?: 'success' | 'partial' | 'failure'
   latestPerformance?: ActorPerformance
   lastEffect?: {

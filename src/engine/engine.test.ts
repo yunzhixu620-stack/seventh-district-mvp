@@ -165,4 +165,45 @@ describe('action interpretation and ruling', () => {
     expect(report.v3Reveal.identityJudgmentRecorded).toBe(false)
     expect(report.v3Reveal.ending.id).not.toBe('identifiedHumanTest')
   })
+
+  it('compares submitted identity guesses without inventing skipped judgments', () => {
+    const session = {
+      ...activateSession(createSession('investigator', 'D7-NIGHT')),
+      status: 'finished' as const,
+      result: 'success' as const,
+      identityGuesses: {
+        seeker: 'aiAgent' as const,
+        leaker: 'fixedNpc' as const,
+        systemProxy: 'systemProxy' as const,
+      },
+      identityGuessSubmitted: true,
+      identityGuessSkipped: false,
+    }
+
+    const report = buildReplayReport(session)
+
+    expect(report.v3Reveal.identityJudgmentRecorded).toBe(true)
+    expect(report.v3Reveal.identitySummary).toEqual({
+      correct: 2,
+      incorrect: 1,
+      uncertain: 2,
+    })
+    expect(
+      report.v3Reveal.roles.find((role) => role.roleId === 'seeker')
+        ?.guessResult,
+    ).toBe('correct')
+    expect(
+      report.v3Reveal.roles.find((role) => role.roleId === 'leaker')
+        ?.guessResult,
+    ).toBe('incorrect')
+    expect(report.v3Reveal.ending.id).toBe('identifiedHumanTest')
+
+    const skipped = buildReplayReport({
+      ...session,
+      identityGuesses: {},
+      identityGuessSkipped: true,
+    })
+    expect(skipped.v3Reveal.identityJudgmentRecorded).toBe(false)
+    expect(skipped.v3Reveal.identityGuessSkipped).toBe(true)
+  })
 })

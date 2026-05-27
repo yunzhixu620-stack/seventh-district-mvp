@@ -119,6 +119,44 @@ export const ui = {
     en: 'This session did not collect your identity guesses, so it will not invent a misjudgment.',
   },
   caseFile: { zhCN: '调查记录', en: 'Case notes' },
+  identityCheckpoint: { zhCN: '终局判断 / 身份竞猜', en: 'Final check / Identity guess' },
+  identityGuessHeading: {
+    zhCN: '在揭晓之前，你认为他们是谁？',
+    en: 'Before the reveal, who do you think they are?',
+  },
+  identityGuessIntro: {
+    zhCN: '根据今夜的发言、动向与矛盾，为每个在场者标记你认为的控制类型。',
+    en: 'Mark each person from their words, movements, and contradictions tonight.',
+  },
+  identityGuessWarning: {
+    zhCN: '提交后才会公开真实答案；此刻没有任何选项代表事实。',
+    en: 'True answers are revealed only after submission; no option is a disclosed fact.',
+  },
+  guessHumanSlot: { zhCN: '真人位', en: 'Human slot' },
+  guessAiAgent: { zhCN: 'AI Agent', en: 'AI Agent' },
+  guessFixedNpc: { zhCN: '固定 NPC', en: 'Fixed NPC' },
+  guessSystemProxy: { zhCN: '系统代理', en: 'System Proxy' },
+  guessUncertain: { zhCN: '不确定', en: 'Uncertain' },
+  identityGuessProgress: { zhCN: '已判断席位', en: 'Marked seats' },
+  skipIdentityGuess: { zhCN: '跳过判断并揭晓', en: 'Skip and reveal' },
+  submitIdentityGuess: { zhCN: '提交判断并揭晓', en: 'Submit guesses' },
+  identityGuessSummary: { zhCN: '你的身份判断', en: 'Your identity read' },
+  identityCorrect: { zhCN: '判断正确', en: 'Correct' },
+  identityIncorrect: { zhCN: '误判', en: 'Misjudged' },
+  identityUncertain: { zhCN: '未判断', en: 'Uncertain' },
+  identityYourGuess: { zhCN: '你的判断', en: 'Your guess' },
+  identitySkipped: {
+    zhCN: '你跳过了身份判断。真实控制类型现已公开，但不会虚构你的误判。',
+    en: 'You skipped the identity guess. True control types are now revealed without inventing a misjudgment.',
+  },
+  identityMisledReason: {
+    zhCN: '此人曾制造可记录的误导动向，可能影响了你的判断。',
+    en: 'This person made a recorded misleading move that may have shaped your read.',
+  },
+  identityNoObservedMisdirection: {
+    zhCN: '本局未记录此人直接制造误导，你的判断可能受局势压力影响。',
+    en: 'No direct misleading move from this person was recorded; street pressure may have shaped your read.',
+  },
   sessionRule: {
     zhCN: '局内不公布幕后控制类型。你只能从行动、矛盾与局后报告判断。',
     en:

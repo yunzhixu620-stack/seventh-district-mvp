@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
+import { createSession } from './engine/sessionEngine'
 import { useGameStore } from './store/gameStore'
 
 describe('playable navigation and localization', () => {
@@ -83,5 +84,39 @@ describe('playable navigation and localization', () => {
     expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
     expect(screen.queryByText(/固定 NPC/)).not.toBeInTheDocument()
     expect(screen.queryByText(/系统代理/)).not.toBeInTheDocument()
+  })
+})
+
+describe('identity guess gate', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    useGameStore.setState({
+      language: 'en',
+      audioEnabled: false,
+      seed: 'D7-NIGHT',
+      pendingAction: undefined,
+      session: {
+        ...createSession('investigator', 'D7-NIGHT'),
+        status: 'finished',
+        result: 'success',
+      },
+    })
+  })
+
+  it('can be skipped without inventing identity results', async () => {
+    const user = userEvent.setup()
+    render(
+      <MemoryRouter initialEntries={['/identity-guess']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByText('Before the reveal, who do you think they are?'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Role reveal')).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Skip and reveal' }))
+    expect(screen.getByText('Role reveal')).toBeInTheDocument()
+    expect(screen.getByText(/You skipped the identity guess/)).toBeInTheDocument()
   })
 })
