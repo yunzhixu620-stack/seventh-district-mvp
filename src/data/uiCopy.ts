@@ -132,6 +132,33 @@ export const ui = {
     zhCN: '提交后才会公开真实答案；此刻没有任何选项代表事实。',
     en: 'True answers are revealed only after submission; no option is a disclosed fact.',
   },
+  observedBehavior: { zhCN: '本局观察记录', en: 'Observed behavior' },
+  observablePublicMessages: { zhCN: '公开发言', en: 'Public messages' },
+  observablePrivateMoves: { zhCN: '私下行动', en: 'Private moves' },
+  observablePossibleInfluence: {
+    zhCN: '曾公开推动叙事，可能影响判断',
+    en: 'Public framing may have influenced your read',
+  },
+  observablePrivateApproach: {
+    zhCN: '曾私下接触你，动机仍不透明',
+    en: 'Approached you privately; motive remains unclear',
+  },
+  observableProceduralPressure: {
+    zhCN: '曾施加程序性压力',
+    en: 'Applied procedural pressure',
+  },
+  observablePublicPresence: {
+    zhCN: '仅有公开发言，尚不足下结论',
+    en: 'Only public statements observed; not enough to conclude',
+  },
+  observableInsufficient: {
+    zhCN: '本局观察不足',
+    en: 'Insufficient observation this session',
+  },
+  observableNoRecord: {
+    zhCN: '你没有记录到此人的可见行动。',
+    en: 'You recorded no visible action from this person.',
+  },
   guessHumanSlot: { zhCN: '真人位', en: 'Human slot' },
   guessAiAgent: { zhCN: 'AI Agent', en: 'AI Agent' },
   guessFixedNpc: { zhCN: '固定 NPC', en: 'Fixed NPC' },

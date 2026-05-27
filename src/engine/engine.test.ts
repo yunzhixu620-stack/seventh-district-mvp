@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseAction } from './actionParser'
 import { isCanonSafe } from './consistencyGuard'
+import { buildIdentityEvidence } from './identityEvidenceEngine'
 import { buildReplayReport } from './replayEngine'
 import { ruleAction } from './rulingEngine'
 import { activateSession, createSession } from './sessionEngine'
@@ -205,5 +206,22 @@ describe('action interpretation and ruling', () => {
     })
     expect(skipped.v3Reveal.identityJudgmentRecorded).toBe(false)
     expect(skipped.v3Reveal.identityGuessSkipped).toBe(true)
+  })
+
+  it('builds identity-reading notes only from visible session records', () => {
+    let session = activateSession(createSession('investigator', 'D7-NIGHT'))
+    session = ruleAction(
+      session,
+      parseAction('probe leaker', 'recommended', 'probe', 'leaker'),
+    ).nextState
+
+    const leakerEvidence = buildIdentityEvidence(session, 'leaker')
+    const keeperEvidence = buildIdentityEvidence(session, 'keeper')
+
+    expect(leakerEvidence.privateActionCount).toBeGreaterThan(0)
+    expect(leakerEvidence.signal).toBe('privateApproach')
+    expect(leakerEvidence.latestObservation?.sender).toBe('leaker')
+    expect(keeperEvidence.signal).toBe('insufficient')
+    expect(keeperEvidence.latestObservation).toBeUndefined()
   })
 })
