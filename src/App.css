@@ -839,6 +839,36 @@
   color: #c3ccd7;
 }
 
+.reveal-intro {
+  white-space: pre-line;
+}
+
+.outcome-stamp {
+  border-left: 2px solid var(--gold);
+  display: grid;
+  gap: 8px;
+  margin-top: 30px;
+  max-width: 700px;
+  padding-left: 16px;
+}
+
+.outcome-stamp strong {
+  color: var(--gold);
+  font-size: 19px;
+}
+
+.outcome-stamp small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.outcome-stamp p {
+  color: #c3ccd7;
+  margin: 0;
+}
+
 .report-grid {
   display: grid;
   grid-template-columns: 1.03fr 0.97fr;
@@ -857,6 +887,122 @@
   letter-spacing: 0.11em;
   margin: 20px 0 7px;
   text-transform: uppercase;
+}
+
+.ending-panel > p:last-child {
+  color: #c3ccd7;
+  line-height: 1.72;
+  white-space: pre-line;
+}
+
+.reveal-panel {
+  margin-top: 18px;
+}
+
+.reveal-roster {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.reveal-card {
+  background: #101b2c;
+  border: 1px solid var(--line);
+  padding: 16px;
+}
+
+.reveal-card header {
+  align-items: start;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.reveal-card header div {
+  display: grid;
+  gap: 4px;
+}
+
+.reveal-card header strong {
+  color: #f3e6ce;
+  font-size: 18px;
+}
+
+.reveal-card header span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.reveal-flags {
+  align-items: end;
+  display: grid;
+  gap: 6px;
+}
+
+.reveal-flags b {
+  border: 1px solid currentColor;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+.reveal-flags .achieved {
+  color: var(--safe);
+}
+
+.reveal-flags .failed {
+  color: var(--danger);
+}
+
+.reveal-flags .misleading {
+  color: var(--gold);
+}
+
+.reveal-card h3 {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  margin: 15px 0 6px;
+  text-transform: uppercase;
+}
+
+.reveal-card p {
+  color: #c3ccd7;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.reveal-card .control-type {
+  color: var(--gold);
+}
+
+.report-details {
+  margin-top: 18px;
+}
+
+.misdirection-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 24px;
+}
+
+.misdirection-list article {
+  border-left: 2px solid var(--danger);
+  padding-left: 12px;
+}
+
+.misdirection-list strong {
+  color: #f3e6ce;
+}
+
+.misdirection-list p {
+  color: #c3ccd7;
+  font-size: 14px;
+  margin: 6px 0 0;
 }
 
 .action-trail {
@@ -930,6 +1076,10 @@ html[data-reduce-motion='true'] *::after {
   .landing,
   .situation-board,
   .report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal-roster {
     grid-template-columns: 1fr;
   }
   .landing {

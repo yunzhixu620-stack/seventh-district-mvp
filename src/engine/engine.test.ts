@@ -130,4 +130,39 @@ describe('action interpretation and ruling', () => {
       activityMessages.some((message) => message.channel === 'private'),
     ).toBe(true)
   })
+
+  it('reveals control types and observed misdirection only in the post-game report', () => {
+    let session = activateSession(createSession('investigator', 'D7-NIGHT'))
+    const turns = [
+      ['ask', 'keeper'],
+      ['probe', 'seeker'],
+      ['trade', 'leaker'],
+    ] as const
+
+    for (const [actionType, targetId] of turns) {
+      session = ruleAction(
+        session,
+        parseAction(actionType, 'recommended', actionType, targetId),
+      ).nextState
+    }
+
+    const report = buildReplayReport({
+      ...session,
+      status: 'finished',
+      result: 'success',
+    })
+
+    expect(report.v3Reveal.roles).toHaveLength(6)
+    expect(
+      report.v3Reveal.roles.find((role) => role.roleId === 'seeker')
+        ?.controlType,
+    ).toBe('aiAgent')
+    expect(
+      report.v3Reveal.roles.find((role) => role.roleId === 'systemProxy')
+        ?.controlType,
+    ).toBe('systemProxy')
+    expect(report.v3Reveal.misdirectionSources.length).toBeGreaterThan(0)
+    expect(report.v3Reveal.identityJudgmentRecorded).toBe(false)
+    expect(report.v3Reveal.ending.id).not.toBe('identifiedHumanTest')
+  })
 })

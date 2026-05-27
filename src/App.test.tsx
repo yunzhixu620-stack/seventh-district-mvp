@@ -80,5 +80,8 @@ describe('playable navigation and localization', () => {
     expect(screen.getByText('管理员关注')).toBeInTheDocument()
     expect(screen.getByText('证据风险')).toBeInTheDocument()
     expect(screen.getByText('公共舆论')).toBeInTheDocument()
+    expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/固定 NPC/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/系统代理/)).not.toBeInTheDocument()
   })
 })

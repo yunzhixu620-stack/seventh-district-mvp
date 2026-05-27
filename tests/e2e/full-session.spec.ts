@@ -56,7 +56,16 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await page.getByRole('button', { name: /Reveal/ }).click()
   await page.getByRole('button', { name: 'Say it' }).click()
   await expect(page.getByText('Session Replay Report')).toBeVisible()
-  await expect(page.getByText('Safe Resolution')).toBeVisible()
+  await expect(page.getByText('Ruling confirmed')).toBeVisible()
+  await expect(page.getByText('Role reveal')).toBeVisible()
+  await expect(page.locator('.reveal-card')).toHaveCount(6)
+  await expect(page.locator('.reveal-roster')).toContainText('AI Agent')
+  await expect(page.locator('.reveal-roster')).toContainText('系统代理')
+  await expect(page.getByText('Misdirection sources')).toBeVisible()
+  await expect(page.getByText('Identity judgments')).toBeVisible()
+  await expect(
+    page.getByText(/did not collect your identity guesses/),
+  ).toBeVisible()
   await expect(page.getByText('Action trail')).toBeVisible()
 
   await page.getByRole('button', { name: 'Replay with a new role' }).click()
