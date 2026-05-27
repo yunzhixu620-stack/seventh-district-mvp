@@ -71,6 +71,9 @@ export function StatusCard() {
             </details>
           )
         })}
+        {session.streetState.publicOpinion < 25 && (
+          <p className="public-opinion-empty">{t('publicOpinionQuiet')}</p>
+        )}
       </div>
       <div className="panel location-panel">
         <p className="eyebrow">{t('currentSituation')}</p>

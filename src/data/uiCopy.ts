@@ -50,6 +50,11 @@ export const ui = {
   knowledge: { zhCN: '已知事实', en: 'Known fact' },
   resources: { zhCN: '初始资源', en: 'Starting resources' },
   enter: { zhCN: '进入现场', en: 'Enter the scene' },
+  briefingGuideTitle: { zhCN: '入场建议', en: 'First move suggestion' },
+  briefingGuideBody: {
+    zhCN: '先选中一个在场者，用“询问”确认公开说法；你不会因此锁定后续路线。',
+    en: 'Choose someone and Ask about their public account first; this will not lock your later choices.',
+  },
   composure: { zhCN: '冷静', en: 'Composure' },
   favors: { zhCN: '人情', en: 'Favors' },
   exposure: { zhCN: '暴露度', en: 'Exposure' },
@@ -76,12 +81,31 @@ export const ui = {
   intel: { zhCN: '口袋笔记', en: 'Pocket Notebook' },
   public: { zhCN: '公共频道', en: 'Public channel' },
   private: { zhCN: '私信', en: 'Private messages' },
+  emptyPrivate: {
+    zhCN: '还没有人私下联系你。主动向某人开口，或许会换来一条只对你说的话。',
+    en: 'No one has contacted you privately yet. Approach someone and they may answer off the public record.',
+  },
   clues: { zhCN: '线索', en: 'Clues' },
   emptyClue: {
     zhCN: '你还没有真正能握住的证据。找一个人开口。',
     en: 'You do not yet hold a fact you can trust. Make someone speak.',
   },
   round: { zhCN: '回合', en: 'Round' },
+  sessionGuide: { zhCN: '夜局提示', en: 'Night-session guide' },
+  recommendedNextAction: { zhCN: '建议下一步', en: 'Suggested next move' },
+  firstQuestionReason: {
+    zhCN: '先取得一条无需付出资源的可核验说法，也让其他人开始反应。',
+    en: 'Gain a checkable statement without spending resources, and make the room react.',
+  },
+  followupReason: {
+    zhCN: '你已有一条线索。继续向当前对象施压，可能形成终局所需的第二条来源。',
+    en: 'You have one lead. Pressing the current person may produce the second source needed for a final ruling.',
+  },
+  trySuggestedAction: { zhCN: '尝试这一步', en: 'Try this move' },
+  publicOpinionQuiet: {
+    zhCN: '公共说法尚未成形：现在的发言更容易改变风向。',
+    en: 'No strong public opinion yet: what is said now can still redirect the room.',
+  },
   report: { zhCN: '结案复盘报告', en: 'Session Replay Report' },
   truthVariant: { zhCN: '本局真相', en: 'Active truth' },
   meaning: { zhCN: '信封含义', en: 'Envelope meaning' },

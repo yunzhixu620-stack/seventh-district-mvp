@@ -387,6 +387,18 @@
   padding-left: 14px;
 }
 
+.briefing-guide {
+  border: 1px dashed var(--line);
+  margin: 22px 0;
+  padding: 14px;
+}
+
+.briefing-guide p:last-child {
+  color: #c3ccd7;
+  line-height: 1.6;
+  margin: 9px 0 0;
+}
+
 .brief-resources {
   display: flex;
   gap: 32px;
@@ -512,6 +524,15 @@
 .street-state-panel {
   display: grid;
   gap: 10px;
+}
+
+.public-opinion-empty {
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 13px 0 0;
+  padding-top: 12px;
 }
 
 .street-meter {
@@ -1892,6 +1913,36 @@ html[data-reduce-motion='true'] *::after {
   color: #66788d;
   border-color: #243348;
   opacity: 0.62;
+}
+
+.session-guide {
+  background: rgba(229, 176, 75, 0.08);
+  border: 1px solid rgba(229, 176, 75, 0.45);
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.session-guide strong {
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.session-guide > p:not(.eyebrow) {
+  color: #c3ccd7;
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.session-guide .guide-action {
+  background: var(--gold);
+  border: 0;
+  color: #15110b;
+  font-weight: 600;
+  justify-self: start;
+  padding: 8px 12px;
 }
 
 .finale-gate {

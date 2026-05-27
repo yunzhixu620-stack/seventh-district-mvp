@@ -55,6 +55,7 @@ export function IntelBoard() {
         </div>
       ) : (
         <div className="message-list">
+          {messages.length === 0 && <p className="empty">{t('emptyPrivate')}</p>}
           {messages.map((message) => (
             <article key={message.id}>
               <header>
