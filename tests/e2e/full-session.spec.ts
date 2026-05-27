@@ -59,6 +59,19 @@ test('player can enter, investigate, switch language, and close a session', asyn
     page.getByText('Before the reveal, who do you think they are?'),
   ).toBeVisible()
   await expect(page.getByText('Role reveal')).not.toBeVisible()
+  await expect(page.getByText('Observed behavior').first()).toBeVisible()
+  await expect(
+    page
+      .locator('.guess-card')
+      .filter({ hasText: 'A Ran' })
+      .getByText(/Approached you privately/),
+  ).toBeVisible()
+  await expect(
+    page
+      .locator('.guess-card')
+      .filter({ hasText: 'Xu Mian' })
+      .getByText(/Only public statements observed/),
+  ).toBeVisible()
   await page
     .getByRole('group', { name: /Jiang Chi/ })
     .getByRole('button', { name: 'AI Agent' })

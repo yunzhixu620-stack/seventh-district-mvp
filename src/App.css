@@ -862,6 +862,76 @@
   font-size: 12px;
 }
 
+.observation-note {
+  background: #101b2c;
+  border: 1px solid var(--line);
+  margin-bottom: 15px;
+  padding: 12px;
+}
+
+.observation-note .eyebrow {
+  margin-bottom: 8px;
+}
+
+.reading-signal {
+  color: #c3ccd7;
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.reading-signal.possibleInfluence {
+  color: var(--warning);
+}
+
+.reading-signal.privateApproach {
+  color: var(--gold);
+}
+
+.reading-signal.proceduralPressure {
+  color: #86b3dd;
+}
+
+.reading-signal.insufficient {
+  color: var(--muted);
+}
+
+.observation-counts {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.observation-counts span,
+.observation-tags span {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  padding: 4px 7px;
+}
+
+.observation-note blockquote {
+  border-left: 2px solid var(--line);
+  color: #c3ccd7;
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 11px 0;
+  padding-left: 10px;
+  white-space: pre-line;
+}
+
+.observation-empty {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 11px 0;
+}
+
+.observation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .guess-options {
   display: flex;
   flex-wrap: wrap;
