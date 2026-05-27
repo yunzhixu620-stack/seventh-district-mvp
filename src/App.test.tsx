@@ -81,9 +81,34 @@ describe('playable navigation and localization', () => {
     expect(screen.getByText('管理员关注')).toBeInTheDocument()
     expect(screen.getByText('证据风险')).toBeInTheDocument()
     expect(screen.getByText('公共舆论')).toBeInTheDocument()
+    expect(screen.getByText('夜局提示')).toBeInTheDocument()
+    expect(screen.getByText(/公共说法尚未成形/)).toBeInTheDocument()
     expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
     expect(screen.queryByText(/固定 NPC/)).not.toBeInTheDocument()
     expect(screen.queryByText(/系统代理/)).not.toBeInTheDocument()
+  })
+
+  it('makes the first suggested action understandable without forcing it', async () => {
+    const user = userEvent.setup()
+    useGameStore.setState({ language: 'en' })
+    render(
+      <MemoryRouter initialEntries={['/roles']}>
+        <App />
+      </MemoryRouter>,
+    )
+
+    await user.click(
+      screen.getAllByRole('button', { name: 'Select and receive briefing' })[0],
+    )
+    expect(screen.getByText('First move suggestion')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Enter the scene' }))
+
+    expect(screen.getByText('Night-session guide')).toBeInTheDocument()
+    expect(screen.getByText(/Gain a checkable statement/)).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'Private messages' }))
+    expect(screen.getByText(/No one has contacted you privately/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Try this move' }))
+    expect(screen.getByRole('dialog')).toHaveTextContent('Ask')
   })
 })
 

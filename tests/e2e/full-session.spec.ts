@@ -32,6 +32,14 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await expect(page.getByText('Private Role Briefing')).toBeVisible()
   await page.getByRole('button', { name: 'Enter the scene' }).click()
   await expect(page.getByText('How Will You Speak?')).toBeVisible()
+  await expect(page.getByText('Night-session guide')).toBeVisible()
+  await expect(page.getByText(/Gain a checkable statement/)).toBeVisible()
+  await page.getByRole('tab', { name: 'Private messages' }).click()
+  await expect(
+    page.getByText(/No one has contacted you privately yet/),
+  ).toBeVisible()
+  await page.getByRole('tab', { name: 'Public channel' }).click()
+  await expect(page.locator('.message-list article').first()).toBeVisible()
 
   await page.getByRole('button', { name: /Probe/ }).click()
   await expect(page.getByRole('dialog')).toContainText('Probe')
@@ -40,6 +48,8 @@ test('player can enter, investigate, switch language, and close a session', asyn
   await expect(
     page.getByText('You finally asked a question worth answering.'),
   ).toBeVisible()
+  await page.getByRole('tab', { name: 'Private messages' }).click()
+  await expect(page.locator('.message-list article').first()).toBeVisible()
   await page.getByRole('tab', { name: /Clues/ }).click()
   await expect(page.locator('.clue-list article')).toHaveCount(1)
 

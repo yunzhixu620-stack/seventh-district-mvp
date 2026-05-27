@@ -5,6 +5,7 @@ import { npcProfiles } from '../data/npcs'
 import { roleById } from '../data/roles'
 import { ui } from '../data/uiCopy'
 import { localize } from '../types/i18n'
+import type { ActionType } from '../types/action'
 import type { RoleId } from '../types/role'
 import { useGameStore } from '../store/gameStore'
 import { playCue } from '../utils/audio'
@@ -34,6 +35,9 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
   const finalPreviewLocked = Boolean(
     pendingAction && actions[pendingAction.type].terminal && !finaleGate.ready,
   )
+  const showFirstSessionGuide = session.history.length < 2
+  const suggestedAction: ActionType =
+    session.knownClues.length === 0 ? 'ask' : 'probe'
   const actionClassName = (type: (typeof actionOrder)[number]) =>
     [
       actions[type].terminal && 'terminal-action',
@@ -103,6 +107,28 @@ export function ActionDesk({ onFinished }: { onFinished: () => void }) {
           </button>
         ))}
       </div>
+      {showFirstSessionGuide && (
+        <aside className="session-guide" aria-label={t('sessionGuide')}>
+          <p className="eyebrow">{t('sessionGuide')}</p>
+          <strong>
+            {t('recommendedNextAction')}: {localize(actions[suggestedAction].label, language)}{' '}
+            → {localize(npcProfiles[selectedTargetId].callSign, language)}
+          </strong>
+          <p>
+            {t(
+              session.knownClues.length === 0
+                ? 'firstQuestionReason'
+                : 'followupReason',
+            )}
+          </p>
+          <button
+            className="guide-action"
+            onClick={() => previewRecommended(suggestedAction)}
+          >
+            {t('trySuggestedAction')}
+          </button>
+        </aside>
+      )}
       <div
         className={`finale-gate ${finaleGate.ready ? 'ready' : ''}`}
         aria-live="polite"

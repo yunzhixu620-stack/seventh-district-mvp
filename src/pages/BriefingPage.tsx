@@ -63,6 +63,10 @@ export function BriefingPage() {
             {t('favors')} <strong>{session.favor}</strong>
           </span>
         </div>
+        <aside className="briefing-guide">
+          <p className="eyebrow">{t('briefingGuideTitle')}</p>
+          <p>{t('briefingGuideBody')}</p>
+        </aside>
         <button className="primary-button" onClick={begin}>
           {t('enter')}
         </button>
